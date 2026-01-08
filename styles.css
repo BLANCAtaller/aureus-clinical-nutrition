@@ -194,6 +194,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    position: relative;
 }
 
 .user-profile {
@@ -258,6 +259,17 @@ body {
     z-index: 1000;
     display: none;
     animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@media (max-width: 768px) {
+    .user-switcher-popover {
+        position: fixed;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 300px;
+        max-width: calc(100vw - 40px);
+    }
 }
 
 .user-switcher-popover.active {
@@ -8748,6 +8760,12 @@ body {
     background: rgba(255, 255, 255, 0.03);
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.drawer-user-profile:hover {
+    background: rgba(255, 255, 255, 0.06);
 }
 
 .drawer-user-profile img {

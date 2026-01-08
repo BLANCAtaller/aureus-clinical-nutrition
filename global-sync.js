@@ -114,11 +114,15 @@ window.switchUser = (userName, userAvatar, isInitial = false) => {
     // Update UI elements if they exist
     const currentUserNameEl = document.getElementById('currentUserName');
     const currentAvatarEl = document.getElementById('currentAvatar');
+    const drawerUserNameEl = document.getElementById('drawerUserName');
+    const drawerAvatarEl = document.getElementById('drawerAvatar');
     const greetingNameEl = document.querySelector('.greeting-container h1');
     const userOptions = document.querySelectorAll('.user-option');
 
     if (currentUserNameEl) currentUserNameEl.innerText = userName;
     if (currentAvatarEl) currentAvatarEl.src = userAvatar;
+    if (drawerUserNameEl) drawerUserNameEl.innerText = userName;
+    if (drawerAvatarEl) drawerAvatarEl.src = userAvatar;
     if (greetingNameEl) {
         if (greetingNameEl.innerText.toLowerCase().includes('hello') || greetingNameEl.innerText.toLowerCase().includes('¡hola')) {
             greetingNameEl.innerHTML = `Hello, ${userName} <span class="dot">.</span>`;
@@ -153,13 +157,14 @@ window.switchUser = (userName, userAvatar, isInitial = false) => {
 
 function initGlobalUserSwitcher() {
     const userProfileBtn = document.getElementById('userProfileBtn');
+    const drawerUserProfileBtn = document.getElementById('drawerUserProfileBtn');
     const userSwitcherPopover = document.getElementById('userSwitcherPopover');
     const userOptions = document.querySelectorAll('.user-option');
     const currentUserNameEl = document.getElementById('currentUserName');
     const currentAvatarEl = document.getElementById('currentAvatar');
     const greetingNameEl = document.querySelector('.greeting-container h1');
 
-    if (userProfileBtn && userSwitcherPopover) {
+    if ((userProfileBtn || drawerUserProfileBtn) && userSwitcherPopover) {
         // --- DYNAMIC USERS LOGIC ---
         const CUSTOM_USERS_KEY = 'aureus_custom_users';
         // const addUserBtn = userSwitcherPopover.querySelector('.add-user-option');
@@ -289,10 +294,19 @@ function initGlobalUserSwitcher() {
         renderCustomUsers();
         // --- END DYNAMIC USERS ---
 
-        userProfileBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            userSwitcherPopover.classList.toggle('active');
-        });
+        if (userProfileBtn) {
+            userProfileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                userSwitcherPopover.classList.toggle('active');
+            });
+        }
+
+        if (drawerUserProfileBtn) {
+            drawerUserProfileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                userSwitcherPopover.classList.toggle('active');
+            });
+        }
 
         document.addEventListener('click', () => {
             userSwitcherPopover.classList.remove('active');

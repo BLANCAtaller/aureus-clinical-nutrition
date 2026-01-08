@@ -78,25 +78,25 @@
                         <div class="user-role">Pro Member</div>
                     </div>
                     <i class="fa-solid fa-ellipsis-vertical options-icon"></i>
+                </div>
 
-                    <!-- User Switcher Popover -->
-                    <div class="user-switcher-popover" id="userSwitcherPopover">
-                        <div class="popover-header">Switch User</div>
-                        <div class="user-option current" data-user="BlindSnk" data-avatar="images/item_profile.png">
-                            <img src="images/item_profile.png" alt="BlindSnk">
-                            <span class="name">BlindSnk</span>
-                            <i class="fa-solid fa-check" style="margin-left: auto; color: var(--primary-lime);"></i>
-                        </div>
-                        <div class="user-option" data-user="Gio Bardales" data-avatar="images/gio_profile.png">
-                            <img src="images/gio_profile.png" alt="Gio Bardales">
-                            <span class="name">Gio Bardales</span>
-                        </div>
-                        <div class="popover-divider"></div>
-                        <div class="add-user-option logout-option" onclick="logout()" style="color: #EF4444;">
-                            <i class="fa-solid fa-right-from-bracket"
-                                style="background: rgba(239, 68, 68, 0.1); color: #EF4444;"></i>
-                            <span>Cerrar sesión</span>
-                        </div>
+                <!-- User Switcher Popover moved out for global accessibility -->
+                <div class="user-switcher-popover" id="userSwitcherPopover">
+                    <div class="popover-header">Switch User</div>
+                    <div class="user-option current" data-user="BlindSnk" data-avatar="images/item_profile.png">
+                        <img src="images/item_profile.png" alt="BlindSnk">
+                        <span class="name">BlindSnk</span>
+                        <i class="fa-solid fa-check" style="margin-left: auto; color: var(--primary-lime);"></i>
+                    </div>
+                    <div class="user-option" data-user="Gio Bardales" data-avatar="images/gio_profile.png">
+                        <img src="images/gio_profile.png" alt="Gio Bardales">
+                        <span class="name">Gio Bardales</span>
+                    </div>
+                    <div class="popover-divider"></div>
+                    <div class="add-user-option logout-option" onclick="logout()" style="color: #EF4444;">
+                        <i class="fa-solid fa-right-from-bracket"
+                            style="background: rgba(239, 68, 68, 0.1); color: #EF4444;"></i>
+                        <span>Cerrar sesión</span>
                     </div>
                 </div>
             </div>
@@ -662,10 +662,10 @@
             </a>
         </nav>
 
-        <div class="drawer-user-profile">
-            <img src="images/item_profile.png" alt="Profile">
+        <div class="drawer-user-profile" id="drawerUserProfileBtn">
+            <img src="images/item_profile.png" alt="Profile" id="drawerAvatar">
             <div class="d-user-info">
-                <div class="d-name">BlindSnk</div>
+                <div class="d-name" id="drawerUserName">BlindSnk</div>
                 <div class="d-role">Pro Member</div>
             </div>
         </div>
