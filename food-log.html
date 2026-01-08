@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUREUS FIT AI - Food Logger</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="aiscan-results.css">
+
+    <!-- Charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="AUREUS" class="logo-img">
+                <div class="logo-text">
+                    <span class="brand">AUREUS</span>
+                    <span class="tagline">Clinical Nutrition</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item">
+                    <i class="fa-solid fa-table-columns"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item active">
+                    <i class="fa-solid fa-utensils"></i>
+                    <span>Food Log</span>
+                </a>
+                <a href="food-database.html" class="nav-item">
+                    <i class="fa-solid fa-apple-whole"></i>
+                    <span>Food Database</span>
+                </a>
+                <a href="meal-planner.html" class="nav-item">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    <span>Meal Planner</span>
+                </a>
+
+
+
+                <div class="nav-divider"></div>
+
+                <a href="fasting-timer.html" class="nav-item special-timer">
+                    <i class="fa-solid fa-stopwatch"></i>
+                    <span>Fasting Timer</span>
+                </a>
+
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="settings.html" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+
+                <div class="user-profile" id="userProfileBtn">
+                    <img src="images/item_profile.png" alt="Profile" class="avatar" id="currentAvatar">
+                    <div class="user-info">
+                        <div class="user-name" id="currentUserName">BlindSnk</div>
+                        <div class="user-role">Pro Member</div>
+                    </div>
+                    <i class="fa-solid fa-ellipsis-vertical options-icon"></i>
+
+                    <!-- User Switcher Popover -->
+                    <div class="user-switcher-popover" id="userSwitcherPopover">
+                        <div class="popover-header">Switch User</div>
+                        <div class="user-option current" data-user="BlindSnk" data-avatar="images/item_profile.png">
+                            <img src="images/item_profile.png" alt="BlindSnk">
+                            <span class="name">BlindSnk</span>
+                            <i class="fa-solid fa-check" style="margin-left: auto; color: var(--primary-lime);"></i>
+                        </div>
+                        <div class="user-option" data-user="Gio Bardales" data-avatar="images/gio_profile.png">
+                            <img src="images/gio_profile.png" alt="Gio Bardales">
+                            <span class="name">Gio Bardales</span>
+                        </div>
+                        <div class="popover-divider"></div>
+                        <div class="add-user-option logout-option" onclick="logout()" style="color: #EF4444;">
+                            <i class="fa-solid fa-right-from-bracket"
+                                style="background: rgba(239, 68, 68, 0.1); color: #EF4444;"></i>
+                            <span>Cerrar sesión</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- MOBILE TOP BAR (Logo + Hamburger) -->
+            <div class="mobile-top-bar">
+                <div class="mobile-brand-group">
+                    <img src="images/logo.png" alt="Logo" class="mobile-logo-img">
+                    <span class="mobile-brand-text">AUREUS</span>
+                </div>
+                <!-- MOBILE HAMBURGER BUTTON -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+            <!-- Header -->
+            <header class="top-header">
+                <div class="greeting-container">
+                    <h1>Food Logger</h1>
+                    <div class="date-subtitle">Track meals & monitor purine levels</div>
+                </div>
+                <div class="header-actions">
+                    <div class="date-selector-pill">
+                        <i id="btnPrevDate" class="fa-solid fa-chevron-left"></i>
+                        <span id="dateSelectorLabel"><i class="fa-regular fa-calendar"></i> Today</span>
+                        <i id="btnNextDate" class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <button id="globalSaveBtn" class="btn-save">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Save Changes
+                    </button>
+                </div>
+            </header>
+
+            <!-- Food Logger Grid -->
+            <div class="food-logger-grid">
+                <!-- Left Column: Today's Log -->
+                <div class="logger-left-col">
+                    <!-- Today's Log -->
+                    <div class="card todays-log-card">
+                        <div class="card-header-row"
+                            style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3>Today's Log</h3>
+                            <span id="currentDateDisplay"
+                                style="color: var(--text-gray); font-size: 14px; font-weight: 500;"></span>
+                        </div>
+
+                        <div class="log-timeline">
+                            <!-- Breakfast -->
+                            <div class="log-group">
+                                <div class="group-header">
+                                    <span class="dot yellow"></span>
+                                    <div class="meal-title-row">
+                                        <span class="meal-name">BREAKFAST</span>
+                                    </div>
+                                </div>
+                                <div class="log-items-container"
+                                    style="background:transparent; border:none; padding:0;">
+                                    <div class="empty-state-box btn-add-meal-dynamic" data-meal="breakfast">
+                                        <span class="empty-text">Nothing logged yet</span>
+                                        <span class="add-text">Add BREAKFAST</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Lunch -->
+                            <div class="log-group">
+                                <div class="group-header">
+                                    <span class="dot green"></span>
+                                    <div class="meal-title-row">
+                                        <span class="meal-name">LUNCH</span>
+                                    </div>
+                                </div>
+                                <div class="log-items-container"
+                                    style="background:transparent; border:none; padding:0;">
+                                    <div class="empty-state-box btn-add-meal-dynamic" data-meal="lunch">
+                                        <span class="empty-text">Nothing logged yet</span>
+                                        <span class="add-text">Add LUNCH</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Dinner -->
+                            <div class="log-group">
+                                <div class="group-header">
+                                    <span class="dot gray"></span>
+                                    <div class="meal-title-row">
+                                        <span class="meal-name">DINNER</span>
+                                    </div>
+                                </div>
+
+                                <div class="log-items-container"
+                                    style="background:transparent; border:none; padding:0;">
+                                    <div class="empty-state-box btn-add-meal-dynamic" data-meal="dinner">
+                                        <span class="empty-text">Nothing logged yet</span>
+                                        <span class="add-text">Add DINNER</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Snack / Drinks -->
+                            <div class="log-group">
+                                <div class="group-header">
+                                    <span class="dot purple"></span>
+                                    <div class="meal-title-row">
+                                        <span class="meal-name">SNACK / DRINKS</span>
+                                    </div>
+                                </div>
+
+                                <div class="log-items-container"
+                                    style="background:transparent; border:none; padding:0;">
+                                    <div class="empty-state-box btn-add-meal-dynamic" data-meal="snacks">
+                                        <span class="empty-text">Nothing logged yet</span>
+                                        <span class="add-text">Add Snack</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Weekly History -->
+                    <!-- Weekly History (Renamed to Macros Breakdown) -->
+                    <div class="card weekly-macros-card" style="margin-bottom: 20px;">
+                        <div class="card-header-row" style="align-items: flex-start; margin-bottom: 24px;">
+                            <div class="header-left" style="display: flex; gap: 12px; align-items: center;">
+                                <div
+                                    style="width: 32px; height: 32px; background: rgba(250, 204, 21, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fa-solid fa-chart-pie" style="color: #FACC15; font-size: 14px;"></i>
+                                </div>
+                                <div>
+                                    <h3 style="margin: 0; font-size: 16px; color: #fff;">Macros Breakdown</h3>
+                                    <span style="font-size: 12px; color: #a1a1aa;">Net Carbs limit: 25g/day</span>
+                                </div>
+                            </div>
+                            <div class="header-legend"
+                                style="display: flex; gap: 16px; font-size: 11px; color: #d4d4d8;">
+                                <div style="display: flex; align-items: center; gap: 6px;"><span
+                                        style="width: 8px; height: 8px; background: #FACC15; border-radius: 50%;"></span>
+                                    Net Carbs</div>
+                                <div style="display: flex; align-items: center; gap: 6px;"><span
+                                        style="width: 8px; height: 8px; background: #52525b; border-radius: 50%;"></span>
+                                    Protein</div>
+                                <div style="display: flex; align-items: center; gap: 6px;"><span
+                                        style="width: 8px; height: 8px; border: 1px solid #52525b; border-radius: 50%;"></span>
+                                    Fat</div>
+                            </div>
+                        </div>
+
+                        <div class="weekly-chart-container" id="macrosChartContainer"
+                            style="height: 180px; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 10px;">
+                            <!-- Bars injected via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Context & Stats -->
+                <div class="logger-right-col">
+
+                    <!-- Total Consumed Large Ring -->
+                    <div class="card total-consumed-card">
+                        <div class="main-ring-wrapper">
+                            <svg class="progress-ring" width="220" height="220">
+                                <circle class="progress-ring__background" stroke="rgba(255,255,255,0.05)"
+                                    stroke-width="12" fill="transparent" r="90" cx="110" cy="110" />
+                                <circle class="progress-ring__circle" id="consumedProgressCircle"
+                                    stroke="var(--primary-lime)" stroke-width="12" stroke-linecap="round"
+                                    fill="transparent" r="90" cx="110" cy="110"
+                                    style="stroke-dasharray: 565.48; stroke-dashoffset: 565.48; filter: drop-shadow(0 0 8px var(--primary-lime));" />
+                            </svg>
+                            <div class="ring-center-content">
+                                <span class="label">TOTAL CONSUMED</span>
+                                <span class="value" id="totalConsumedVal">0</span>
+                                <span class="unit">KCAL</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Daily Macros -->
+                    <div class="card daily-macros-card">
+                        <div class="card-header-row">
+                            <h3>Daily Macros</h3>
+                            <span class="sub-link">Target: Keto</span>
+                        </div>
+                        <div class="mini-rings-row">
+                            <div class="mini-ring-item">
+                                <div class="ring-container yellow" style="--p:70">
+                                    <span>70%</span>
+                                </div>
+                                <div class="ring-info">
+                                    <span class="val">105g</span>
+                                    <span class="lbl">Fat</span>
+                                </div>
+                            </div>
+                            <div class="mini-ring-item">
+                                <div class="ring-container red" style="--p:90">
+                                    <span>90%</span>
+                                </div>
+                                <div class="ring-info">
+                                    <span class="val">85g</span>
+                                    <span class="lbl">Prot</span>
+                                </div>
+                            </div>
+                            <div class="mini-ring-item">
+                                <div class="ring-container green" style="--p:40">
+                                    <span>40%</span>
+                                </div>
+                                <div class="ring-info">
+                                    <span class="val">18g</span>
+                                    <span class="lbl">Net Carb</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="calories-bar-row">
+                            <span class="lbl">CALORIES REMAINING</span>
+                            <div class="cals-val">
+                                <span class="big">550</span> kcal
+                            </div>
+                            <div class="mini-progress">
+                                <div class="bar-fill" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Uric Acid Risk -->
+                    <div class="card risk-card">
+                        <div class="risk-bg-icon">
+                            <i class="fa-solid fa-gauge-high"></i>
+                        </div>
+                        <div class="card-header-row">
+                            <h3>Uric Acid Risk</h3>
+                            <span class="badge-risk glow">HIGH RISK</span>
+                        </div>
+
+                        <div class="risk-gauge-wrapper">
+                            <div class="gauge-bar-container">
+                                <div class="gauge-bar-gradient"></div>
+                                <div class="gauge-marker" style="left: 85%">
+                                    <i class="fa-solid fa-caret-down"></i>
+                                </div>
+                            </div>
+                            <div class="gauge-labels">
+                                <span>Low</span>
+                                <span class="risk-value-center">780mg Purines</span>
+                                <span>Crit.</span>
+                            </div>
+                        </div>
+
+                        <div class="risk-warning-box">
+                            <div class="warning-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                            <div class="warning-text">
+                                <strong>Warning:</strong> Approaching daily limit. Consider swapping red meat for eggs
+                                or tofu for dinner.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Quick Add Modal -->
+    <div id="quickAddModal" class="modal-overlay hidden">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add to Meal</h3>
+                <button id="closeModalBtn" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="modal-tabs">
+                <button class="tab-btn active" data-tab="favorites">Favorites</button>
+                <button class="tab-btn" data-tab="manual">Manual Entry</button>
+                <button class="tab-btn" data-tab="aiscan">🤖 AI Scan</button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Favorites Tab -->
+                <div id="tabFavorites" class="tab-content active">
+                    <div class="favorites-search-container">
+                        <input type="search" placeholder="Search favorites..." class="favorites-search-input">
+                    </div>
+                    <div id="favoritesList" class="favorites-list">
+                        <!-- Items injected via JS -->
+                    </div>
+                </div>
+
+                <!-- Manual Entry Tab -->
+                <div id="tabManual" class="tab-content">
+                    <div class="manual-form">
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-plate-wheat"></i> Food Name</label>
+                            <input type="text" id="manualName" placeholder="e.g., Grilled Chicken Salad">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-fire"></i> Calories</label>
+                                <input type="number" id="manualCals" placeholder="kcal">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-flask"></i> Purines (mg)</label>
+                                <input type="number" id="manualPurine" placeholder="mg">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-wheat-awn"></i> Carbs (g)</label>
+                                <input type="number" id="manualCarb" placeholder="g">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-droplet"></i> Fat (g)</label>
+                                <input type="number" id="manualFat" placeholder="g">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-dna"></i> Protein (g)</label>
+                                <input type="number" id="manualProt" placeholder="g">
+                            </div>
+                        </div>
+
+                        <!-- INGREDIENTES Section for Manual Entry -->
+                        <div class="ingredients-editor-section manual-ingredients">
+                            <label class="section-label">INGREDIENTES</label>
+                            <div class="ingredients-grid" id="manualIngredientsGrid">
+                                <!-- Ingredient cards will be injected here -->
+                            </div>
+                            <button type="button" class="btn-add-ingredient" id="btnAddManualIng">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>Añadir Ingrediente</span>
+                            </button>
+                        </div>
+
+                        <!-- Mini-Modal for Manual Entry Ingredients -->
+                        <div id="manualIngMiniModal" class="ingredient-mini-modal hidden">
+                            <div class="mini-modal-content">
+                                <div class="mini-modal-header">
+                                    <span id="manualIngModalTitle">Añadir Ingrediente</span>
+                                    <button type="button" class="close-mini-modal" id="closeManualIngModal">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
+                                <div class="mini-modal-body">
+                                    <div class="input-group">
+                                        <label>Nombre del Ingrediente</label>
+                                        <input type="text" id="manualIngEditName" placeholder="ej: Carne de res">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Cantidad</label>
+                                        <input type="text" id="manualIngEditAmount" placeholder="ej: 150g, 2 rodajas">
+                                    </div>
+                                </div>
+                                <div class="mini-modal-footer">
+                                    <button type="button" class="btn-delete-ing" id="btnDeleteManualIng">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                    <button type="button" class="btn-save-ing" id="btnSaveManualIng">Guardar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group"
+                            style="flex-direction: row; align-items: center; gap: 8px; margin-top: 10px; margin-bottom: 20px; cursor: pointer;">
+                            <input type="checkbox" id="chkSaveToDb"
+                                style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary-lime);">
+                            <label for="chkSaveToDb"
+                                style="margin: 0; font-size: 13px; color: var(--text-white); cursor: pointer; font-weight: 600;">Guardar
+                                en la base de datos de favoritos</label>
+                        </div>
+                        <button id="addManualBtn" class="btn-primary-action">Add Item</button>
+                    </div>
+                </div>
+
+                <!-- AI Scan Tab -->
+                <div id="tabAIScan" class="tab-content">
+                    <!-- Camera/Upload Section -->
+                    <div id="scanInputSection" class="scan-section active">
+                        <div class="scan-options">
+                            <button class="btn-scan-option" id="btnTakePhoto">
+                                <i class="fa-solid fa-camera"></i>
+                                <span>Tomar Foto</span>
+                            </button>
+                            <button class="btn-scan-option" id="btnUploadPhoto">
+                                <i class="fa-solid fa-upload"></i>
+                                <span>Subir Imagen</span>
+                            </button>
+                        </div>
+
+                        <div class="ai-scan-help">
+                            <div class="help-header">
+                                <i class="fa-solid fa-lightbulb"></i>
+                                <span>Sugerencias de fotos para mejor precisión:</span>
+                            </div>
+                            <ul class="help-list">
+                                <li>📸 Foto de un plato de comida completo</li>
+                                <li>🖼️ Captura de pantalla con nombre del plato</li>
+                                <li>📦 Foto de empaque con tabla nutricional</li>
+                                <li>🍗 Imágenes claras de cualquier alimento</li>
+                            </ul>
+                            <p class="help-note">
+                                <i class="fa-solid fa-circle-info"></i>
+                                La IA analiza automáticamente calorías, purinas, carbos, grasas y proteínas en ~5-10
+                                segundos.
+                            </p>
+                        </div>
+
+                        <input type="file" id="photoInput" accept="image/*" hidden>
+                        <div id="imagePreview" class="image-preview hidden"></div>
+                    </div>
+
+                    <!-- Processing Section -->
+                    <div id="scanProcessingSection" class="scan-section hidden">
+                        <div class="loading-animation">
+                            <i class="fa-solid fa-brain fa-pulse"></i>
+                            <p>Analizando alimento con IA...</p>
+                            <div class="loading-bar">
+                                <div class="loading-bar-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div id="scanResultsSection" class="scan-section hidden">
+                        <div class="scan-results">
+                            <!-- Premium Summary Card -->
+                            <div class="result-summary-card">
+                                <div id="scanResultImageThumb" class="result-thumb"></div>
+                                <div class="result-info">
+                                    <h4 id="detectedFoodName">Cargando...</h4>
+                                    <div class="confidence-wrapper">
+                                        <span class="confidence-badge" id="confidenceBadge">-</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Manual Adjustment Row -->
+                            <div class="manual-adjustment-container">
+                                <!-- Removed adjustment-status -->
+
+                                <p class="edit-label">o editar manualmente</p>
+
+                                <div class="adjustment-row">
+                                    <div class="quantity-control">
+                                        <span class="ctrl-label">Cantidad</span>
+                                        <div class="ctrl-stepper">
+                                            <button id="btnDecreaseQty"><i class="fa-solid fa-minus"></i></button>
+                                            <!-- Removed scanQuantity number -->
+                                            <button id="btnIncreaseQty"><i class="fa-solid fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="calorie-control">
+                                        <span class="ctrl-label">calorías*</span>
+                                        <div class="cal-input-wrapper">
+                                            <input type="number" id="scanCalorieInput" value="0">
+                                            <span class="unit">calorías</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Nutritional Summary Bar -->
+                            <div class="scan-nutrition-summary">
+                                <div class="nav-metric">
+                                    <span class="label">Purinas</span>
+                                    <span class="value" id="resPurines">-</span>
+                                    <span class="unit">mg</span>
+                                </div>
+                                <div class="nav-metric">
+                                    <span class="label">Carbos</span>
+                                    <span class="value" id="resCarbs">-</span>
+                                    <span class="unit">g</span>
+                                </div>
+                                <div class="nav-metric">
+                                    <span class="label">Grasas</span>
+                                    <span class="value" id="resFat">-</span>
+                                    <span class="unit">g</span>
+                                </div>
+                                <div class="nav-metric">
+                                    <span class="label">Proteínas</span>
+                                    <span class="value" id="resProtein">-</span>
+                                    <span class="unit">g</span>
+                                </div>
+                            </div>
+
+                            <!-- Ingredients Section -->
+                            <div class="ingredients-section">
+                                <h5>Ingredientes</h5>
+                                <div id="ingredientsGrid" class="ingredients-grid">
+                                    <!-- Ingredients cards injected via JS -->
+                                </div>
+                            </div>
+
+                            <div class="result-actions">
+                                <div class="save-favorite-option">
+                                    <input type="checkbox" id="chkSaveScannedAsFavorite" checked>
+                                    <label for="chkSaveScannedAsFavorite">
+                                        <i class="fa-solid fa-star"></i>
+                                        Guardar en favoritos
+                                    </label>
+                                </div>
+
+                                <button class="btn-primary-action" id="btnAddScannedFood">
+                                    <i class="fa-solid fa-check"></i>
+                                    Agregar
+                                </button>
+                                <button class="btn-secondary" id="btnScanAgain">
+                                    <i class="fa-solid fa-rotate"></i>
+                                    Escanear Otra Vez
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="food-data.js"></script>
+    <script src="global-sync.js"></script>
+    <script src="food-log-renderer.js"></script>
+
+    <!-- MOBILE NAVIGATION DRAWER -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <aside class="mobile-nav-drawer" id="mobileNavDrawer">
+        <div class="drawer-header">
+            <div class="logo-group">
+                <img src="images/logo.png" alt="Logo" class="mobile-logo-img">
+                <span class="drawer-brand">AUREUS</span>
+            </div>
+            <button class="drawer-close-btn" id="drawerCloseBtn">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <nav class="drawer-nav">
+            <a href="index.html" class="drawer-item">
+                <i class="fa-solid fa-table-columns"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="food-log.html" class="drawer-item active">
+                <i class="fa-solid fa-utensils"></i>
+                <span>Food Log</span>
+            </a>
+            <a href="food-database.html" class="drawer-item">
+                <i class="fa-solid fa-apple-whole"></i>
+                <span>Food Database</span>
+            </a>
+            <a href="meal-planner.html" class="drawer-item">
+                <i class="fa-regular fa-calendar-days"></i>
+                <span>Meal Planner</span>
+            </a>
+
+            <div class="drawer-divider"></div>
+
+            <a href="fasting-timer.html" class="drawer-item">
+                <i class="fa-solid fa-stopwatch"></i>
+                <span>Fasting Timer</span>
+            </a>
+
+            <div class="drawer-divider"></div>
+
+            <a href="settings.html" class="drawer-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="drawer-user-profile">
+            <img src="images/item_profile.png" alt="Profile">
+            <div class="d-user-info">
+                <div class="d-name">BlindSnk</div>
+                <div class="d-role">Pro Member</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- === INGREDIENT SEARCH MODAL === -->
+    <div class="modal-overlay hidden" id="ingredientSearchModal">
+        <div class="modal-card mini-modal">
+            <div class="modal-header">
+                <h3>Buscar Ingrediente</h3>
+                <button class="modal-close" id="closeIngredientSearchBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="search-bar-mini">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="ingredientSearchInput" placeholder="Buscar en base de datos...">
+                </div>
+
+                <div id="ingredientSearchResults" class="mini-list-results">
+                    <!-- Results populated by JS -->
+                </div>
+
+                <div class="manual-entry-divider">o agregar manualmente</div>
+
+                <div class="manual-form-group">
+                    <input type="text" id="manualIngName" placeholder="Nombre (ej. Pan Blanco)">
+                    <input type="text" id="manualIngAmount" placeholder="Cant. (2 pz)">
+                </div>
+                <button class="btn-primary btn-add-manual" id="btnAddManualIngredient">
+                    <i class="fa-solid fa-plus"></i> Agregar Manualmente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- === INGREDIENT EDIT MODAL === -->
+    <div class="modal-overlay hidden" id="ingredientEditModal">
+        <div class="modal-card mini-modal">
+            <div class="modal-header">
+                <h3>Editar Ingrediente</h3>
+                <button class="modal-close" id="closeIngredientEditBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="edit-field-group">
+                    <label>Nombre</label>
+                    <input type="text" id="editIngName" readonly class="input-readonly">
+                </div>
+                <div class="edit-field-group">
+                    <label>Cantidad / Descripción</label>
+                    <input type="text" id="editIngAmount" placeholder="Ej: 100g">
+                </div>
+            </div>
+            <div class="modal-footer split-actions">
+                <button class="btn-danger-text" id="btnDeleteIngredient">
+                    <i class="fa-solid fa-trash"></i> Eliminar
+                </button>
+                <button class="btn-primary" id="btnSaveIngredient">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

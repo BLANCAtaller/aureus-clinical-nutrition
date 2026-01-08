@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUREUS FIT AI - Dashboard</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+
+    <!-- Google Login -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="AUREUS" class="logo-img">
+                <div class="logo-text">
+                    <span class="brand">AUREUS</span>
+                    <span class="tagline">Clinical Nutrition</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active">
+                    <i class="fa-solid fa-table-columns"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="food-log.html" class="nav-item">
+                    <i class="fa-solid fa-utensils"></i>
+                    <span>Food Log</span>
+                </a>
+                <a href="food-database.html" class="nav-item">
+                    <i class="fa-solid fa-apple-whole"></i>
+                    <span>Food Database</span>
+                </a>
+                <a href="meal-planner.html" class="nav-item">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    <span>Meal Planner</span>
+                </a>
+
+
+
+                <div class="nav-divider"></div>
+
+                <a href="fasting-timer.html" class="nav-item special-timer">
+                    <i class="fa-solid fa-stopwatch"></i>
+                    <span>Fasting Timer</span>
+                </a>
+
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="settings.html" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+
+                <div class="user-profile" id="userProfileBtn">
+                    <img src="images/item_profile.png" alt="Profile" class="avatar" id="currentAvatar">
+                    <div class="user-info">
+                        <div class="user-name" id="currentUserName">BlindSnk</div>
+                        <div class="user-role">Pro Member</div>
+                    </div>
+                    <i class="fa-solid fa-ellipsis-vertical options-icon"></i>
+
+                    <!-- User Switcher Popover -->
+                    <div class="user-switcher-popover" id="userSwitcherPopover">
+                        <div class="popover-header">Switch User</div>
+                        <div class="user-option current" data-user="BlindSnk" data-avatar="images/item_profile.png">
+                            <img src="images/item_profile.png" alt="BlindSnk">
+                            <span class="name">BlindSnk</span>
+                            <i class="fa-solid fa-check" style="margin-left: auto; color: var(--primary-lime);"></i>
+                        </div>
+                        <div class="user-option" data-user="Gio Bardales" data-avatar="images/gio_profile.png">
+                            <img src="images/gio_profile.png" alt="Gio Bardales">
+                            <span class="name">Gio Bardales</span>
+                        </div>
+                        <div class="popover-divider"></div>
+                        <div class="add-user-option logout-option" onclick="logout()" style="color: #EF4444;">
+                            <i class="fa-solid fa-right-from-bracket"
+                                style="background: rgba(239, 68, 68, 0.1); color: #EF4444;"></i>
+                            <span>Cerrar sesión</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- MOBILE TOP BAR (Logo + Hamburger) -->
+            <div class="mobile-top-bar">
+                <div class="mobile-brand-group">
+                    <img src="images/logo.png" alt="Logo" class="mobile-logo-img">
+                    <span class="mobile-brand-text">AUREUS</span>
+                </div>
+                <!-- MOBILE HAMBURGER BUTTON -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+            <!-- Header -->
+            <header class="top-header">
+                <div class="greeting-container">
+                    <h1>Hello, BlindSnk <span class="dot">.</span></h1>
+                    <div class="date-display">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span id="current-date">Tuesday, October 24</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-icon">
+                        <i class="fa-solid fa-bell"></i>
+                    </button>
+                    <button id="globalSaveBtn" class="btn-save">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Save Changes
+                    </button>
+                    <button class="btn-primary">
+                        <i class="fa-solid fa-plus"></i>
+                        Log Meal
+                    </button>
+                </div>
+            </header>
+
+            <!-- Grid Layout -->
+            <div class="dashboard-grid">
+                <!-- Row 1: Key Stats -->
+                <div class="card stat-card calories-card extended">
+                    <div class="card-header">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span>Calories Remaining</span>
+                            <span id="calGoalBadge" class="badge-tag lime-bg"
+                                style="display: none; width: fit-content; font-size: 10px; padding: 2px 8px; color: #000; font-weight: 700;">MAINTENANCE</span>
+                        </div>
+                        <div class="icon-badge-square">
+                            <i class="fa-solid fa-fire"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value-big" id="calRemValue">
+                        --
+                    </div>
+
+                    <div class="progress-details mb-4">
+                        <div class="detail-row">
+                            <span id="calConsumedText">-- consumed</span>
+                            <span id="calGoalText">Goal: --</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="calProgBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="card stat-card carbs-card extended">
+                    <div class="card-header">
+                        <div class="header-left-group">
+                            <span>Net Carbs</span>
+                            <span class="badge-tag blue" id="carbBadge">KETOSIS</span>
+                        </div>
+                        <div class="icon-badge-square blue-bg">
+                            <i class="fa-solid fa-chart-simple"></i>
+                        </div>
+                    </div>
+
+                    <div class="stat-value-big" id="carbValueContainer">
+                        <span id="carbConsumedVal">--</span>g <span class="unit-text" id="carbTargetVal">/ --g</span>
+                    </div>
+
+                    <div class="status-row mt-2">
+                        <div class="status-indicator">
+                            <div class="pulsing-dot blue" id="carbPulseDot"></div>
+                            <span id="carbStatusText">Loading...</span>
+                        </div>
+                        <span class="sub-text" id="carbLeftText">--g left</span>
+                    </div>
+
+                    <div class="progress-bar-container mt-2 mb-4">
+                        <div class="progress-bar blue" id="carbProgBar" style="width: 0%"></div>
+                    </div>
+
+                    <div class="divider-line"></div>
+
+                    <div class="impact-section">
+                        <span class="label">Impact</span>
+                        <div class="dots-meter" id="carbImpactDots">
+                            <div class="dot active"></div>
+                            <div class="dot active"></div>
+                            <div class="dot active"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                        <span class="status-text green" id="carbImpactStatus">Optimal</span>
+                    </div>
+                </div>
+
+                <div class="card stat-card purine-card extended">
+                    <div class="card-header">
+                        <span>Purine Intake <i class="fa-solid fa-pen" id="btnEditPurine"
+                                style="font-size: 0.8em; margin-left: 8px; opacity: 0.5; cursor: pointer;"
+                                title="Edit Limit"></i></span>
+                        <div class="icon-badge-square green-bg">
+                            <i class="fa-solid fa-shield-heart" id="purineIcon"></i>
+                        </div>
+                    </div>
+
+                    <div class="stat-value-big green-text" id="purineStatusText">
+                        Low
+                    </div>
+
+                    <div class="segmented-meter mt-2 mb-4" id="purineMeter">
+                        <div class="seg green">
+                            <div class="seg-fill"></div>
+                        </div>
+                        <div class="seg orange">
+                            <div class="seg-fill"></div>
+                        </div>
+                        <div class="seg red">
+                            <div class="seg-fill"></div>
+                        </div>
+                    </div>
+
+                    <div class="status-row">
+                        <span class="sub-text" id="purineZoneLabel">Safe Zone</span>
+                        <div class="pill-badge" id="purineValuePill">
+                            --mg / 400mg
+                        </div>
+                    </div>
+
+                    <div class="divider-line"></div>
+
+                    <div class="prediction-text" id="purinePredictionText">
+                        Your uric acid prediction is stable.
+                    </div>
+                </div>
+
+                <!-- Row 2: Macros & Timer -->
+                <div class="card macro-card">
+                    <div class="macro-layout">
+                        <div class="chart-container">
+                            <canvas id="macroChart"></canvas>
+                            <div class="chart-center-text">
+                                <span class="label">TOTAL CONSUMED</span>
+                                <span class="value">1,450</span>
+                                <span class="unit">KCAL</span>
+                            </div>
+                        </div>
+                        <div class="macro-stats-container">
+                            <h3>Macro Breakdown</h3>
+                            <p class="subtitle">Targeting 75% Fat, 20% Protein, 5% Carbs</p>
+
+                            <div class="macro-cards-list">
+                                <!-- Fat -->
+                                <div class="macro-stat-card fat">
+                                    <div class="icon-box-small lime">
+                                        <i class="fa-solid fa-droplet"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <div class="top-row">
+                                            <span class="name">Fat</span>
+                                            <span class="value">112g</span>
+                                        </div>
+                                        <div class="bottom-row">
+                                            <span class="sub">High Source</span>
+                                            <span class="percent">70%</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Protein -->
+                                <div class="macro-stat-card protein">
+                                    <div class="icon-box-small grey">
+                                        <i class="fa-solid fa-dumbbell"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <div class="top-row">
+                                            <span class="name">Protein</span>
+                                            <span class="value">95g</span>
+                                        </div>
+                                        <div class="bottom-row">
+                                            <span class="sub">Moderate</span>
+                                            <span class="percent">25%</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Carbs -->
+                                <div class="macro-stat-card carbs">
+                                    <div class="icon-box-small dark">
+                                        <i class="fa-solid fa-wheat-awn"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <div class="top-row">
+                                            <span class="name">Carbs</span>
+                                            <span class="value">18g</span>
+                                        </div>
+                                        <div class="bottom-row">
+                                            <span class="sub">Strict Limit</span>
+                                            <span class="percent">5%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card timer-card">
+                    <!-- Header -->
+                    <div class="timer-header">
+                        <div class="header-left-group">
+                            <div class="icon-circle-lime">
+                                <i class="fa-solid fa-stopwatch"></i>
+                            </div>
+                            <span class="title">Fasting Timer</span>
+                        </div>
+                        <div id="dashboardPhaseBadge" class="badge-pill-neon">16:8 IF</div>
+                    </div>
+
+                    <!-- Circular Progress Core -->
+                    <div class="timer-circle-container dashboard-timer-scale">
+                        <svg class="timer-ring-svg" viewBox="0 0 300 300">
+                            <circle class="ring-bg" cx="150" cy="150" r="135"></circle>
+                            <circle class="ring-progress" id="ringProgress" cx="150" cy="150" r="135"></circle>
+                        </svg>
+
+                        <div class="ring-knob-container" id="knobContainer">
+                            <div class="ring-knob"></div>
+                        </div>
+
+                        <div class="timer-inner-content">
+                            <div class="status-badge-neon" id="timerStatusBadge">
+                                <i class="fa-solid fa-bolt"></i> <span id="badgeText">READY</span>
+                            </div>
+                            <div class="timer-digits-giant" id="timerDigits">00:00:00</div>
+                            <div class="timer-meta-row">
+                                <span id="targetTimeDisplay">Target: --:--</span>
+                                <span class="sep">•</span>
+                                <span id="progressPercentDisplay">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Controls -->
+                    <div class="timer-controls-premium">
+                        <button id="btnStartFast" class="btn-primary-lime-giant hidden">
+                            <i class="fa-solid fa-play"></i>
+                            Start Fasting
+                        </button>
+
+                        <div id="activeControls" class="active-controls-flex">
+                            <button id="btnRestartFast" class="btn-glass-icon" title="Restart Timer">
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </button>
+                            <button id="btnEndFast" class="btn-glass-stop">
+                                <i class="fa-regular fa-circle-stop"></i>
+                                <span>End Fast</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 3: Hydration & Quick Add -->
+                <div class="card hydration-card">
+                    <div class="hydration-header">
+                        <div class="icon-box">
+                            <i class="fa-solid fa-droplet"></i>
+                        </div>
+                        <span class="title">Hydration</span>
+                        <div class="water-count">
+                            1,250 / <br> 2,500ml
+                        </div>
+                    </div>
+                    <div class="drops-container">
+                        <i class="fa-solid fa-droplet active"></i>
+                        <i class="fa-solid fa-droplet active"></i>
+                        <i class="fa-solid fa-droplet active"></i>
+                        <i class="fa-solid fa-droplet active"></i>
+                        <i class="fa-solid fa-droplet active"></i>
+                        <i class="fa-solid fa-droplet"></i>
+                        <i class="fa-solid fa-droplet"></i>
+                        <i class="fa-solid fa-droplet"></i>
+                    </div>
+                    <button class="btn-dashed">
+                        <i class="fa-solid fa-plus"></i> Add Water (250ml)
+                    </button>
+                </div>
+
+                <div class="card quick-add-card">
+                    <div class="card-header simple">
+                        <span>Quick Add Meal</span>
+                        <a href="food-log.html" class="link-yellow">View All</a>
+                    </div>
+                    <div class="meal-buttons">
+                        <div class="meal-btn" data-meal="breakfast">
+                            <div class="icon-circle orange">
+                                <i class="fa-solid fa-egg"></i>
+                            </div>
+                            <span>Breakfast</span>
+                        </div>
+                        <div class="meal-btn" data-meal="lunch">
+                            <div class="icon-circle green">
+                                <i class="fa-solid fa-burger"></i>
+                            </div>
+                            <span>Lunch</span>
+                        </div>
+                        <div class="meal-btn" data-meal="dinner">
+                            <div class="icon-circle red">
+                                <i class="fa-solid fa-drumstick-bite"></i>
+                            </div>
+                            <span>Dinner</span>
+                        </div>
+                        <div class="meal-btn" data-meal="snacks">
+                            <div class="icon-circle purple">
+                                <i class="fa-solid fa-apple-whole"></i>
+                            </div>
+                            <span>Snack</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Quick Add Modal -->
+    <div id="quickAddModal" class="modal-overlay hidden">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add to Meal</h3>
+                <button id="closeModalBtn" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="modal-tabs">
+                <button class="tab-btn active" data-tab="favorites">Favorites</button>
+                <button class="tab-btn" data-tab="manual">Manual Entry</button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Favorites Tab -->
+                <div id="tabFavorites" class="tab-content active">
+                    <div id="favoritesList" class="favorites-list">
+                        <!-- Items injected via JS -->
+                    </div>
+                </div>
+
+                <!-- Manual Entry Tab -->
+                <div id="tabManual" class="tab-content">
+                    <div class="manual-form">
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-plate-wheat"></i> Food Name</label>
+                            <input type="text" id="manualName" placeholder="e.g., Grilled Chicken Salad">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-fire"></i> Calories</label>
+                                <input type="number" id="manualCals" placeholder="kcal">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-flask"></i> Purines (mg)</label>
+                                <input type="number" id="manualPurine" placeholder="mg">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-wheat-awn"></i> Carbs (g)</label>
+                                <input type="number" id="manualCarb" placeholder="g">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-droplet"></i> Fat (g)</label>
+                                <input type="number" id="manualFat" placeholder="g">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-dna"></i> Protein (g)</label>
+                                <input type="number" id="manualProt" placeholder="g">
+                            </div>
+                        </div>
+                        <div class="form-group"
+                            style="flex-direction: row; align-items: center; gap: 8px; margin-top: -10px; margin-bottom: 20px; cursor: pointer;">
+                            <input type="checkbox" id="chkSaveToDb"
+                                style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary-lime);">
+                            <label for="chkSaveToDb"
+                                style="margin: 0; font-size: 13px; color: var(--text-white); cursor: pointer; font-weight: 600;">Guardar
+                                en la base de datos de favoritos</label>
+                        </div>
+                        <button id="addManualBtn" class="btn-primary-action">Add Item</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="food-data.js"></script>
+    <script src="global-sync.js"></script>
+    <script src="script.js"></script>
+    <script src="quick-add-dashboard.js"></script>
+
+    <!-- MOBILE NAVIGATION DRAWER -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <aside class="mobile-nav-drawer" id="mobileNavDrawer">
+        <div class="drawer-header">
+            <div class="logo-group">
+                <img src="images/logo.png" alt="Logo" class="mobile-logo-img">
+                <span class="drawer-brand">AUREUS</span>
+            </div>
+            <button class="drawer-close-btn" id="drawerCloseBtn">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <nav class="drawer-nav">
+            <a href="index.html" class="drawer-item active">
+                <i class="fa-solid fa-table-columns"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="food-log.html" class="drawer-item">
+                <i class="fa-solid fa-utensils"></i>
+                <span>Food Log</span>
+            </a>
+            <a href="food-database.html" class="drawer-item">
+                <i class="fa-solid fa-apple-whole"></i>
+                <span>Food Database</span>
+            </a>
+            <a href="meal-planner.html" class="drawer-item">
+                <i class="fa-regular fa-calendar-days"></i>
+                <span>Meal Planner</span>
+            </a>
+
+            <div class="drawer-divider"></div>
+
+            <a href="fasting-timer.html" class="drawer-item">
+                <i class="fa-solid fa-stopwatch"></i>
+                <span>Fasting Timer</span>
+            </a>
+
+            <div class="drawer-divider"></div>
+
+            <a href="settings.html" class="drawer-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="drawer-user-profile">
+            <img src="images/item_profile.png" alt="Profile">
+            <div class="d-user-info">
+                <div class="d-name">BlindSnk</div>
+                <div class="d-role">Pro Member</div>
+            </div>
+        </div>
+    </aside>
+</body>
+
+</html>

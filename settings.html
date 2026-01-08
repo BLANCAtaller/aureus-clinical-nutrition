@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUREUS FIT AI - Settings</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="card-styles.css">
+    <link rel="stylesheet" href="modal-styles.css">
+
+    <!-- Charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="AUREUS" class="logo-img">
+                <div class="logo-text">
+                    <span class="brand">AUREUS</span>
+                    <span class="tagline">Clinical Nutrition</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item">
+                    <i class="fa-solid fa-table-columns"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="food-log.html" class="nav-item">
+                    <i class="fa-solid fa-utensils"></i>
+                    <span>Food Log</span>
+                </a>
+                <a href="food-database.html" class="nav-item">
+                    <i class="fa-solid fa-apple-whole"></i>
+                    <span>Food Database</span>
+                </a>
+                <a href="meal-planner.html" class="nav-item">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    <span>Meal Planner</span>
+                </a>
+
+                <div class="nav-divider"></div>
+
+                <a href="fasting-timer.html" class="nav-item special-timer">
+                    <i class="fa-solid fa-stopwatch"></i>
+                    <span>Fasting Timer</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="settings.html" class="nav-item active">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+
+                <div class="user-profile" id="userProfileBtn">
+                    <img src="images/item_profile.png" alt="Profile" class="avatar" id="currentAvatar">
+                    <div class="user-info">
+                        <div class="user-name" id="currentUserName">BlindSnk</div>
+                        <div class="user-role">Pro Member</div>
+                    </div>
+                    <i class="fa-solid fa-ellipsis-vertical options-icon"></i>
+
+                    <!-- User Switcher Popover -->
+                    <div class="user-switcher-popover" id="userSwitcherPopover">
+                        <div class="popover-header">Switch User</div>
+                        <div class="user-option current" data-user="BlindSnk" data-avatar="images/item_profile.png">
+                            <img src="images/item_profile.png" alt="BlindSnk">
+                            <span class="name">BlindSnk</span>
+                            <i class="fa-solid fa-check" style="margin-left: auto; color: var(--primary-lime);"></i>
+                        </div>
+                        <div class="user-option" data-user="Gio Bardales" data-avatar="images/gio_profile.png">
+                            <img src="images/gio_profile.png" alt="Gio Bardales">
+                            <span class="name">Gio Bardales</span>
+                        </div>
+                        <div class="popover-divider"></div>
+                        <div class="add-user-option logout-option" onclick="logout()" style="color: #EF4444;">
+                            <i class="fa-solid fa-right-from-bracket"
+                                style="background: rgba(239, 68, 68, 0.1); color: #EF4444;"></i>
+                            <span>Cerrar sesión</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- MOBILE TOP BAR (Logo + Hamburger) -->
+            <div class="mobile-top-bar">
+                <div class="mobile-brand-group">
+                    <img src="images/logo.png" alt="Logo" class="mobile-logo-img">
+                    <span class="mobile-brand-text">AUREUS</span>
+                </div>
+                <!-- MOBILE HAMBURGER BUTTON -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+            <header class="settings-header">
+                <div class="header-titles">
+                    <div class="config-badge">CONFIGURATION</div>
+                    <h1>Profile & Metabolic</h1>
+                    <p class="subtitle">Customize your bio-data and dietary constraints for personalized tracking.</p>
+                </div>
+                <div class="header-actions">
+                    <button id="globalSaveBtn" class="btn-save">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Save Changes
+                    </button>
+                </div>
+            </header>
+
+            <div class="settings-grid">
+                <!-- Left Column -->
+                <div class="settings-left">
+                    <!-- Personal Biometrics -->
+                    <section class="settings-card">
+                        <div class="card-title-row">
+                            <h2 class="card-title"><i class="fa-solid fa-user-gear"></i> Personal Biometrics</h2>
+                            <div class="unit-toggle">
+                                <button class="active">Metric</button>
+                                <button>Imperial</button>
+                            </div>
+                        </div>
+
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label>AGE (YEARS)</label>
+                                <input type="number" id="inputAge" value="34">
+                            </div>
+                            <div class="input-group">
+                                <label>GENDER</label>
+                                <div class="custom-select-wrapper">
+                                    <select id="inputGender">
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label>HEIGHT (CM)</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="inputHeight" value="178">
+                                    <span class="unit">cm</span>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label>WEIGHT (KG)</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="inputWeight" value="82.5">
+                                    <span class="unit">kg</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="activity-selector">
+                            <div class="activity-header">
+                                <label>Activity Level</label>
+                                <span class="activity-label-active" id="activityValueDisplay">Moderate (x1.55)</span>
+                            </div>
+                            <p class="activity-sub">Select your typical daily movement</p>
+                            <div class="range-container">
+                                <input type="range" id="activitySlider" min="1.2" max="1.9" step="0.175" value="1.55">
+                                <div class="range-labels">
+                                    <span>SEDENTARY</span>
+                                    <span>LIGHT</span>
+                                    <span>MODERATE</span>
+                                    <span>ACTIVE</span>
+                                    <span>ATHLETE</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Dietary Preferences -->
+                    <section class="settings-card">
+                        <h2 class="card-title"><i class="fa-solid fa-utensils"></i> Dietary Preferences</h2>
+
+                        <label class="section-label">DIET PROTOCOL</label>
+                        <div class="diet-protocol-grid">
+                            <div class="protocol-chip active" data-protocol="standard">
+                                <span class="name">Standard</span>
+                                <span class="desc">Classic Keto</span>
+                            </div>
+                            <div class="protocol-chip" data-protocol="vegetarian">
+                                <span class="name">Vegetarian</span>
+                                <span class="desc">Eco-Keto</span>
+                            </div>
+                            <div class="protocol-chip" data-protocol="vegan">
+                                <span class="name">Vegan</span>
+                                <span class="desc">Plant-Based</span>
+                            </div>
+                            <div class="protocol-chip" data-protocol="carnivore">
+                                <span class="name">Carnivore</span>
+                                <span class="desc">Zero Carb</span>
+                            </div>
+                        </div>
+
+                        <label class="section-label">INTOLERANCES & EXCLUSIONS</label>
+                        <div class="exclusions-grid">
+                            <div class="exclude-chip">Gluten</div>
+                            <div class="exclude-chip">Dairy</div>
+                            <div class="exclude-chip active">Peanuts</div>
+                            <div class="exclude-chip">Shellfish</div>
+                            <div class="exclude-chip">Soy</div>
+                            <div class="exclude-chip">Eggs</div>
+                            <div class="exclude-chip">Pork</div>
+                            <div class="exclude-chip">Red Meat</div>
+                        </div>
+                        <p class="exclusion-tip"><i class="fa-solid fa-circle-info"></i> Selections will automatically
+                            filter the Food Database and Meal Planner.</p>
+                    </section>
+
+
+                    <!-- Appearance & Customization -->
+                    <section class="settings-card appearance-section">
+                        <h2 class="card-title"><i class="fa-solid fa-palette"></i> Appearance & Customization</h2>
+
+                        <label class="section-label">PRIMARY ACCENT COLOR</label>
+                        <div class="color-orbs-container">
+                            <div class="color-orb active" data-color="aureus" style="--orb-color: #D4F458;"
+                                title="Aureus Gold"></div>
+                            <div class="color-orb" data-color="cyan" style="--orb-color: #22D3EE;" title="Cyan Frost">
+                            </div>
+                            <div class="color-orb" data-color="emerald" style="--orb-color: #10B981;" title="Emerald">
+                            </div>
+                            <div class="color-orb" data-color="ruby" style="--orb-color: #EF4444;" title="Ruby"></div>
+                            <div class="color-orb" data-color="amethyst" style="--orb-color: #8B5CF6;" title="Amethyst">
+                            </div>
+                        </div>
+
+                        <label class="section-label" style="margin-top: 25px;">APPLICATION THEME</label>
+                        <div class="theme-cards-grid">
+                            <div class="theme-card active" data-theme="dark">
+                                <div class="theme-preview dark-preview">
+                                    <div class="preview-sidebar"></div>
+                                    <div class="preview-content">
+                                        <div class="preview-card"></div>
+                                    </div>
+                                </div>
+                                <span class="theme-name">Standard Dark</span>
+                            </div>
+                            <div class="theme-card" data-theme="oled">
+                                <div class="theme-preview oled-preview">
+                                    <div class="preview-sidebar"></div>
+                                    <div class="preview-content">
+                                        <div class="preview-card"></div>
+                                    </div>
+                                </div>
+                                <span class="theme-name">OLED Black</span>
+                            </div>
+                            <div class="theme-card" data-theme="midnight">
+                                <div class="theme-preview midnight-preview">
+                                    <div class="preview-sidebar"></div>
+                                    <div class="preview-content">
+                                        <div class="preview-card"></div>
+                                    </div>
+                                </div>
+                                <span class="theme-name">Midnight Blue</span>
+                            </div>
+                        </div>
+
+                        <div class="advanced-appearance-grid" style="margin-top: 30px;">
+                            <div class="appearance-control-box">
+                                <label class="section-label">ADVANCED EFFECTS</label>
+                                <div class="toggle-row mini">
+                                    <div class="toggle-info">
+                                        <span class="toggle-name">Glassmorphism</span>
+                                        <span class="toggle-desc">Blurred background effects</span>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="checkGlass" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+
+                                <div class="slider-control-group" style="margin-top: 20px;">
+                                    <div class="slider-header">
+                                        <span class="slider-label">Card Roundness</span>
+                                        <span class="slider-val" id="radiusVal">16px</span>
+                                    </div>
+                                    <input type="range" min="0" max="40" value="16" class="settings-slider"
+                                        id="radiusSlider">
+                                </div>
+                            </div>
+
+                            <div class="appearance-control-box">
+                                <label class="section-label">TYPOGRAPHY</label>
+                                <div class="font-selector-grid">
+                                    <div class="font-chip active" data-font="Outfit"
+                                        style="font-family: 'Outfit', sans-serif;">
+                                        <span class="font-name">Outfit</span>
+                                        <span class="font-preview">Abc 123</span>
+                                    </div>
+                                    <div class="font-chip" data-font="Inter" style="font-family: 'Inter', sans-serif;">
+                                        <span class="font-name">Inter</span>
+                                        <span class="font-preview">Abc 123</span>
+                                    </div>
+                                    <div class="font-chip" data-font="Montserrat"
+                                        style="font-family: 'Montserrat', sans-serif;">
+                                        <span class="font-name">Montserrat</span>
+                                        <span class="font-preview">Abc 123</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+
+                    <!-- App Preferences -->
+                    <section class="settings-card app-prefs">
+                        <h2 class="card-title">App Preferences</h2>
+                        <div class="toggle-row">
+                            <div class="toggle-info">
+                                <span class="toggle-name">Fasting Alerts</span>
+                                <span class="toggle-desc">Push notifications when window opens/closes</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-row">
+                            <div class="toggle-info">
+                                <span class="toggle-name">Hydration Nudges</span>
+                                <span class="toggle-desc">Hourly water intake reminders during fasting</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </section>
+
+                    <div style="margin-top: 20px; display: flex; gap: 10px;">
+                        <button class="btn-save" id="bottomSaveBtn"
+                            style="width: 100%; justify-content: center; height: 50px; font-size: 16px;">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            Save All Settings
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Column (Stats) -->
+                <div class="settings-right">
+                    <div class="sticky-stats">
+                        <!-- Metabolic Output -->
+                        <div class="stats-card metabolic">
+                            <div class="stats-header">
+                                <span>METABOLIC OUTPUT</span>
+                                <i class="fa-solid fa-bolt-lightning icon-lime"></i>
+                            </div>
+                            <div class="stat-main">
+                                <div class="stat-group">
+                                    <div class="stat-big"><span id="bmrValue">1,784</span> <small>kcal</small></div>
+                                    <span class="stat-label">Basal Metabolic Rate (BMR)</span>
+                                    <span class="stat-sub">Calories burned at rest</span>
+                                </div>
+                                <div class="stat-separator"></div>
+                                <div class="stat-group">
+                                    <div class="stat-big lime-text"><span id="tdeeValue">2,765</span>
+                                        <small>kcal</small>
+                                    </div>
+                                    <span class="stat-label">Total Daily Expenditure (TDEE)</span>
+                                    <span class="stat-sub">Maintenance including activity</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Macro Targets -->
+                        <!-- Macro Targets -->
+                        <div class="stats-card macros-card-premium">
+                            <div class="card-header-simple">
+                                <span><i class="fa-solid fa-bullseye"></i> Macro Targets</span>
+                                <i class="fa-solid fa-chart-pie icon-gray"></i>
+                            </div>
+
+                            <div class="chart-area-premium">
+                                <div class="chart-wrapper">
+                                    <canvas id="settingMacroChart"></canvas>
+                                    <div class="center-text">
+                                        <span class="label">TARGET</span>
+                                        <span class="val-big" id="targetCalsDisplay">--</span>
+                                        <span class="unit">kcal</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="legend-row">
+                                <div class="legend-item">
+                                    <span class="pct lime-text">70%</span>
+                                    <span class="lbl">FAT</span>
+                                    <span class="val" id="targetFatGrams">--g</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="pct grey-text">25%</span>
+                                    <span class="lbl">PROTEIN</span>
+                                    <span class="val" id="targetProtGrams">--g</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="pct dark-text">5%</span>
+                                    <span class="lbl">CARBS</span>
+                                    <span class="val" id="targetCarbGrams">--g</span>
+                                </div>
+                            </div>
+
+                            <div class="goal-footer-box">
+                                <span class="goal-title">GOAL: MAINTENANCE</span>
+                                <span class="goal-sub">0kcal daily deficit</span>
+                            </div>
+                        </div>
+
+                        <!-- Metabolic Safety -->
+                        <div class="safety-card">
+                            <div class="safety-header">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <span>Metabolic Safety</span>
+                            </div>
+                            <p>Consuming below your BMR (<span id="safetyBmr">1,784</span> kcal) for extended periods
+                                can slow down metabolism. Always aim for a caloric intake between your BMR and TDEE.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="global-sync.js"></script>
+    <script src="settings-renderer.js"></script>
+
+    <!-- MOBILE NAVIGATION DRAWER -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <aside class="mobile-nav-drawer" id="mobileNavDrawer">
+        <div class="drawer-header">
+            <div class="logo-group">
+                <img src="images/logo.png" alt="Logo" class="mobile-logo-img">
+                <span class="drawer-brand">AUREUS</span>
+            </div>
+            <button class="drawer-close-btn" id="drawerCloseBtn">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <nav class="drawer-nav">
+            <a href="index.html" class="drawer-item">
+                <i class="fa-solid fa-table-columns"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="food-log.html" class="drawer-item">
+                <i class="fa-solid fa-utensils"></i>
+                <span>Food Log</span>
+            </a>
+            <a href="food-database.html" class="drawer-item">
+                <i class="fa-solid fa-apple-whole"></i>
+                <span>Food Database</span>
+            </a>
+            <a href="meal-planner.html" class="drawer-item">
+                <i class="fa-regular fa-calendar-days"></i>
+                <span>Meal Planner</span>
+            </a>
+
+            <div class="drawer-divider"></div>
+
+            <a href="fasting-timer.html" class="drawer-item">
+                <i class="fa-solid fa-stopwatch"></i>
+                <span>Fasting Timer</span>
+            </a>
+
+            <div class="drawer-divider"></div>
+
+            <a href="settings.html" class="drawer-item active">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="drawer-user-profile">
+            <img src="images/item_profile.png" alt="Profile">
+            <div class="d-user-info">
+                <div class="d-name">BlindSnk</div>
+                <div class="d-role">Pro Member</div>
+            </div>
+        </div>
+    </aside>
+</body>
+
+</html>

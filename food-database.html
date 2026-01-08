@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUREUS FIT AI - Food Database</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="AUREUS" class="logo-img">
+                <div class="logo-text">
+                    <span class="brand">AUREUS</span>
+                    <span class="tagline">Clinical Nutrition</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item">
+                    <i class="fa-solid fa-table-columns"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="food-log.html" class="nav-item">
+                    <i class="fa-solid fa-utensils"></i>
+                    <span>Food Log</span>
+                </a>
+                <a href="#" class="nav-item active">
+                    <i class="fa-solid fa-apple-whole"></i>
+                    <span>Food Database</span>
+                </a>
+                <a href="meal-planner.html" class="nav-item">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    <span>Meal Planner</span>
+                </a>
+
+                <div class="nav-divider"></div>
+
+                <a href="fasting-timer.html" class="nav-item special-timer">
+                    <i class="fa-solid fa-stopwatch"></i>
+                    <span>Fasting Timer</span>
+                </a>
+
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="settings.html" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+
+                <div class="user-profile" id="userProfileBtn">
+                    <img src="images/item_profile.png" alt="Profile" class="avatar" id="currentAvatar">
+                    <div class="user-info">
+                        <div class="user-name" id="currentUserName">BlindSnk</div>
+                        <div class="user-role">Pro Member</div>
+                    </div>
+                    <i class="fa-solid fa-ellipsis-vertical options-icon"></i>
+
+                    <!-- User Switcher Popover -->
+                    <div class="user-switcher-popover" id="userSwitcherPopover">
+                        <div class="popover-header">Switch User</div>
+                        <div class="user-option current" data-user="BlindSnk" data-avatar="images/item_profile.png">
+                            <img src="images/item_profile.png" alt="BlindSnk">
+                            <span class="name">BlindSnk</span>
+                            <i class="fa-solid fa-check" style="margin-left: auto; color: var(--primary-lime);"></i>
+                        </div>
+                        <div class="user-option" data-user="Gio Bardales" data-avatar="images/gio_profile.png">
+                            <img src="images/gio_profile.png" alt="Gio Bardales">
+                            <span class="name">Gio Bardales</span>
+                        </div>
+                        <div class="popover-divider"></div>
+                        <div class="add-user-option logout-option" onclick="logout()" style="color: #EF4444;">
+                            <i class="fa-solid fa-right-from-bracket"
+                                style="background: rgba(239, 68, 68, 0.1); color: #EF4444;"></i>
+                            <span>Cerrar sesión</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- MOBILE TOP BAR (Logo + Hamburger) -->
+            <div class="mobile-top-bar">
+                <div class="mobile-brand-group">
+                    <img src="images/logo.png" alt="Logo" class="mobile-logo-img">
+                    <span class="mobile-brand-text">AUREUS</span>
+                </div>
+                <!-- MOBILE HAMBURGER BUTTON -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+            <!-- Header -->
+            <header class="db-header">
+                <div>
+                    <div class="badge-pill-header">DATABASE V2.4</div>
+                    <h1>Food Classification</h1>
+                    <div class="db-subtitle">Navigate your Ketogenic journey safely. Check purine levels and carb counts
+                        to manage gout risks effectively.</div>
+                </div>
+                <div class="db-actions" style="display: flex; gap: 12px; align-items: center;">
+                    <button id="globalSaveBtn" class="btn-save">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Save Changes
+                    </button>
+                    <button class="btn-add-food" id="btnAddFood">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Nuevo Alimento</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Favorites Area (Horizontal Row) -->
+            <div id="favoritesSection" class="favorites-section hidden">
+                <div class="fav-header">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-star"></i>
+                        <span>Mis Favoritos</span>
+                    </div>
+                    <button id="btnManageFavs" class="btn-manage-favs">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span>Manage</span>
+                    </button>
+                </div>
+                <div id="favoritesGrid" class="favorites-row">
+                    <!-- Favorite items will be injected here -->
+                </div>
+            </div>
+
+            <!-- Search & Filter Bar -->
+            <!-- Premium Integrated Search & Filter Bar -->
+            <div class="db-premium-bar">
+                <div class="db-search-section">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="foodSearch" placeholder="Search foods (e.g. 'Salmon', 'Beef')...">
+                </div>
+
+                <div class="db-filter-section">
+                    <button class="filter-pill-modern active">All Foods</button>
+
+                    <button class="filter-pill-modern dark"><span class="dot safe"></span> Safe</button>
+                    <button class="filter-pill-modern dark"><span class="dot caution"></span> Caution</button>
+                    <button class="filter-pill-modern dark"><span class="dot avoid"></span> Avoid</button>
+
+                    <div class="v-divider-small"></div>
+
+                    <button class="filter-pill-modern dark">Meats</button>
+                    <button class="filter-pill-modern dark">Seafood</button>
+                    <button class="filter-pill-modern dark">Veggies</button>
+                    <button class="filter-pill-modern dark">Drinks</button>
+                    <div class="v-divider-small"></div>
+                    <button class="filter-pill-modern dark" id="btnFilterFavs"><i class="fa-solid fa-star"
+                            style="color: var(--primary-lime); font-size: 10px;"></i> Favorites</button>
+                </div>
+            </div>
+
+            <!-- Food Database Grid (Dynamic) -->
+            <div class="food-db-grid">
+                <!-- Content will be injected by food-db-renderer.js -->
+            </div>
+
+            <!-- Auto-Load More Sentinel -->
+            <div class="load-more-container">
+                <button class="btn-load-more">Load More Foods <i class="fa-solid fa-chevron-down"></i></button>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="food-data.js"></script>
+    <script src="global-sync.js"></script>
+    <script src="food-db-renderer.js"></script>
+
+    <!-- MOBILE NAVIGATION DRAWER -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <aside class="mobile-nav-drawer" id="mobileNavDrawer">
+        <div class="drawer-header">
+            <div class="logo-group">
+                <img src="images/logo.png" alt="Logo" class="mobile-logo-img">
+                <span class="drawer-brand">AUREUS</span>
+            </div>
+            <button class="drawer-close-btn" id="drawerCloseBtn">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <nav class="drawer-nav">
+            <a href="index.html" class="drawer-item">
+                <i class="fa-solid fa-table-columns"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="food-log.html" class="drawer-item">
+                <i class="fa-solid fa-utensils"></i>
+                <span>Food Log</span>
+            </a>
+            <a href="food-database.html" class="drawer-item active">
+                <i class="fa-solid fa-apple-whole"></i>
+                <span>Food Database</span>
+            </a>
+            <a href="meal-planner.html" class="drawer-item">
+                <i class="fa-regular fa-calendar-days"></i>
+                <span>Meal Planner</span>
+            </a>
+
+            <div class="drawer-divider"></div>
+
+            <a href="fasting-timer.html" class="drawer-item">
+                <i class="fa-solid fa-stopwatch"></i>
+                <span>Fasting Timer</span>
+            </a>
+
+            <div class="drawer-divider"></div>
+
+            <a href="settings.html" class="drawer-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="drawer-user-profile">
+            <img src="images/item_profile.png" alt="Profile">
+            <div class="d-user-info">
+                <div class="d-name">BlindSnk</div>
+                <div class="d-role">Pro Member</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Food Editor Modal -->
+    <div id="foodEditorModal" class="modal-overlay hidden">
+        <div class="modal-content premium-modal">
+            <div class="modal-header">
+                <h2>Editar Alimento</h2>
+                <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form id="foodEditorForm">
+                <input type="hidden" id="editIndex">
+
+                <div class="modal-body">
+                    <div class="editor-main">
+                        <div class="icon-selector-section">
+                            <div class="current-icon-display" id="iconDisplay">
+                                <i class="fa-solid fa-utensils"></i>
+                            </div>
+                            <button type="button" class="btn-change-icon" id="btnChangeIcon">Cambiar Icono</button>
+
+                            <!-- Icon Picker (Hidden by default) -->
+                            <div id="iconPicker" class="icon-picker-container hidden">
+                                <div class="icon-picker-header">
+                                    <input type="text" id="iconSearchInput" placeholder="Buscar icono (ej. 'apple')...">
+                                </div>
+                                <div class="icon-picker-grid" id="iconPickerGrid">
+                                    <!-- Categoría: Comida -->
+                                    <i class="fa-solid fa-utensils" data-icon="fa-utensils" title="Utensilios"></i>
+                                    <i class="fa-solid fa-bowl-food" data-icon="fa-bowl-food" title="Bowl Generic"></i>
+                                    <i class="fa-solid fa-bowl-rice" data-icon="fa-bowl-rice"
+                                        title="Arroz/Platillo"></i>
+                                    <i class="fa-solid fa-plate-wheat" data-icon="fa-plate-wheat" title="Plato"></i>
+                                    <i class="fa-solid fa-drumstick-bite" data-icon="fa-drumstick-bite"
+                                        title="Pollo/Carnes"></i>
+                                    <i class="fa-solid fa-cow" data-icon="fa-cow" title="Res/Vaca"></i>
+                                    <i class="fa-solid fa-bone" data-icon="fa-bone" title="Hueso/Cárnicos"></i>
+                                    <i class="fa-solid fa-bacon" data-icon="fa-bacon" title="Tocino"></i>
+                                    <i class="fa-solid fa-fish" data-icon="fa-fish" title="Pescado"></i>
+                                    <i class="fa-solid fa-fish-fins" data-icon="fa-fish-fins" title="Pescado 2"></i>
+                                    <i class="fa-solid fa-shrimp" data-icon="fa-shrimp" title="Camarón"></i>
+                                    <i class="fa-solid fa-egg" data-icon="fa-egg" title="Huevo"></i>
+                                    <i class="fa-solid fa-cheese" data-icon="fa-cheese" title="Queso"></i>
+                                    <i class="fa-solid fa-bread-slice" data-icon="fa-bread-slice" title="Pan"></i>
+                                    <i class="fa-solid fa-pizza-slice" data-icon="fa-pizza-slice" title="Pizza"></i>
+                                    <i class="fa-solid fa-burger" data-icon="fa-burger" title="Hamburguesa"></i>
+                                    <i class="fa-solid fa-hotdog" data-icon="fa-hotdog" title="Hot Dog"></i>
+                                    <i class="fa-solid fa-lemon" data-icon="fa-lemon" title="Limón/Cítrico"></i>
+                                    <i class="fa-solid fa-apple-whole" data-icon="fa-apple-whole"
+                                        title="Manzana/Fruta"></i>
+                                    <i class="fa-solid fa-carrot" data-icon="fa-carrot" title="Zanahoria/Vegetal"></i>
+                                    <i class="fa-solid fa-pepper-hot" data-icon="fa-pepper-hot"
+                                        title="Chile/Picante"></i>
+                                    <i class="fa-solid fa-leaf" data-icon="fa-leaf" title="Hoja/Ensalada"></i>
+                                    <i class="fa-solid fa-seedling" data-icon="fa-seedling" title="Semilla/Nueces"></i>
+                                    <i class="fa-solid fa-wheat-awn" data-icon="fa-wheat-awn" title="Trigo/Cereal"></i>
+                                    <i class="fa-solid fa-ice-cream" data-icon="fa-ice-cream" title="Helado"></i>
+                                    <i class="fa-solid fa-cookie" data-icon="fa-cookie" title="Galleta"></i>
+                                    <i class="fa-solid fa-cookie-bite" data-icon="fa-cookie-bite"
+                                        title="Galleta Mordida"></i>
+                                    <i class="fa-solid fa-candy-cane" data-icon="fa-candy-cane" title="Dulce"></i>
+                                    <i class="fa-solid fa-stroopwafel" data-icon="fa-stroopwafel" title="Waffle"></i>
+
+                                    <!-- Categoría: Bebidas -->
+                                    <i class="fa-solid fa-glass-water" data-icon="fa-glass-water" title="Agua"></i>
+                                    <i class="fa-solid fa-wine-glass" data-icon="fa-wine-glass" title="Vino"></i>
+                                    <i class="fa-solid fa-wine-glass-empty" data-icon="fa-wine-glass-empty"
+                                        title="Vino Blanco"></i>
+                                    <i class="fa-solid fa-wine-bottle" data-icon="fa-wine-bottle" title="Botella"></i>
+                                    <i class="fa-solid fa-beer-mug-empty" data-icon="fa-beer-mug-empty"
+                                        title="Cerveza"></i>
+                                    <i class="fa-solid fa-martini-glass-citrus" data-icon="fa-martini-glass-citrus"
+                                        title="Cóctel"></i>
+                                    <i class="fa-solid fa-mug-hot" data-icon="fa-mug-hot" title="Café/Té"></i>
+                                    <i class="fa-solid fa-mug-saucer" data-icon="fa-mug-saucer" title="Espresso"></i>
+                                    <i class="fa-solid fa-bottle-water" data-icon="fa-bottle-water"
+                                        title="Botella Agua"></i>
+                                    <i class="fa-solid fa-bottle-droplet" data-icon="fa-bottle-droplet"
+                                        title="Aceite/Gotas"></i>
+
+                                    <!-- Categoría: Salud/Metabolismo -->
+                                    <i class="fa-solid fa-heart" data-icon="fa-heart" title="Corazón"></i>
+                                    <i class="fa-solid fa-bolt" data-icon="fa-bolt" title="Energía"></i>
+                                    <i class="fa-solid fa-weight-scale" data-icon="fa-weight-scale"
+                                        title="Peso/Keto"></i>
+                                    <i class="fa-solid fa-brain" data-icon="fa-brain" title="Cerebro/Enfoque"></i>
+                                    <i class="fa-solid fa-dna" data-icon="fa-dna" title="Ancestral"></i>
+                                    <i class="fa-solid fa-atom" data-icon="fa-atom" title="Metabólico"></i>
+                                    <i class="fa-solid fa-flask" data-icon="fa-flask" title="Detox"></i>
+                                    <i class="fa-solid fa-blender" data-icon="fa-blender" title="Batido"></i>
+
+                                    <!-- Categoría: Otros/Varios -->
+                                    <i class="fa-solid fa-star" data-icon="fa-star" title="Estrella"></i>
+                                    <i class="fa-solid fa-gem" data-icon="fa-gem" title="Premium"></i>
+                                    <i class="fa-solid fa-crown" data-icon="fa-crown" title="Rey"></i>
+                                    <i class="fa-solid fa-fire" data-icon="fa-fire" title="Fuego"></i>
+                                    <i class="fa-solid fa-droplet" data-icon="fa-droplet" title="Gota"></i>
+                                    <i class="fa-solid fa-tree" data-icon="fa-tree" title="Árbol"></i>
+                                    <i class="fa-solid fa-clover" data-icon="fa-clover" title="Trébol"></i>
+                                    <i class="fa-solid fa-sun" data-icon="fa-sun" title="Sol"></i>
+                                    <i class="fa-solid fa-snowflake" data-icon="fa-snowflake" title="Frío"></i>
+                                    <i class="fa-solid fa-paw" data-icon="fa-paw" title="Huella"></i>
+                                    <i class="fa-solid fa-mountain" data-icon="fa-mountain" title="Montaña"></i>
+                                    <i class="fa-solid fa-gift" data-icon="fa-gift" title="Regalo"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="editor-fields">
+                            <div class="input-group">
+                                <label>Nombre</label>
+                                <input type="text" id="editName" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Imagen (URL / Link)</label>
+                                <input type="text" id="editImage" placeholder="https://ejemplo.com/imagen.png">
+                            </div>
+                            <div class="editor-row">
+                                <div class="input-group">
+                                    <label>Categoría</label>
+                                    <select id="editCategory">
+                                        <option value="Meats">Carnes</option>
+                                        <option value="Poultry">Aves</option>
+                                        <option value="Seafood">Mariscos</option>
+                                        <option value="Veggies">Verduras</option>
+                                        <option value="Dairy">Lácteos</option>
+                                        <option value="Fruits">Frutas</option>
+                                        <option value="Nuts">Frutos Secos</option>
+                                        <option value="Drinks">Bebidas</option>
+                                        <option value="Fast Food">Comida Rápida</option>
+                                        <option value="Others">Otros</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Estado</label>
+                                    <select id="editStatus">
+                                        <option value="safe">Seguro (Verde)</option>
+                                        <option value="caution">Precaución (Amarillo)</option>
+                                        <option value="avoid">Evitar (Rojo)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="macro-stats-editor">
+                        <div class="input-group small">
+                            <label>Purinas (mg)</label>
+                            <input type="number" id="editPurines">
+                        </div>
+                        <div class="input-group small">
+                            <label>Carbs (g)</label>
+                            <input type="number" step="0.1" id="editCarbs">
+                        </div>
+                        <div class="input-group small">
+                            <label>Proteína (g)</label>
+                            <input type="number" step="0.1" id="editProt">
+                        </div>
+                        <div class="input-group small">
+                            <label>Grasa (g)</label>
+                            <input type="number" step="0.1" id="editFat">
+                        </div>
+                        <div class="input-group small">
+                            <label>Calorías</label>
+                            <input type="number" id="editCal">
+                        </div>
+                    </div>
+
+                    <div class="input-group text-area">
+                        <label>Consejo / Nota</label>
+                        <textarea id="editTip" rows="2"></textarea>
+                    </div>
+
+                    <!-- INGREDIENTES Section -->
+                    <div class="ingredients-editor-section">
+                        <label class="section-label">INGREDIENTES</label>
+                        <div class="ingredients-grid" id="editIngredientsGrid">
+                            <!-- Ingredient cards will be injected here -->
+                        </div>
+                        <button type="button" class="btn-add-ingredient" id="btnAddIngredient">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Añadir Ingrediente</span>
+                        </button>
+                    </div>
+
+                    <!-- Ingredient Edit Mini-Modal -->
+                    <div id="ingredientMiniModal" class="ingredient-mini-modal hidden">
+                        <div class="mini-modal-content">
+                            <div class="mini-modal-header">
+                                <span id="miniModalTitle">Editar Ingrediente</span>
+                                <button type="button" class="close-mini-modal" id="closeMiniModal">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                            <div class="mini-modal-body">
+                                <div class="input-group">
+                                    <label>Nombre del Ingrediente</label>
+                                    <input type="text" id="ingEditName" placeholder="ej: Carne de res">
+                                </div>
+                                <div class="input-group">
+                                    <label>Cantidad</label>
+                                    <input type="text" id="ingEditAmount" placeholder="ej: 150g, 2 rodajas">
+                                </div>
+                            </div>
+                            <div class="mini-modal-footer">
+                                <button type="button" class="btn-delete-ing" id="btnDeleteIng">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                                <button type="button" class="btn-save-ing" id="btnSaveIng">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" id="btnCancelEdit">Cancelar</button>
+                    <button type="submit" class="btn-save">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

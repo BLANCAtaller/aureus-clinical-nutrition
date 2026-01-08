@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUREUS FIT AI - Fasting Timer</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="stylesheet" href="auth-styles.css">
+    <link rel="stylesheet" href="fasting-styles.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="fasting-styles.css"> <!-- New Premium Styles -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="AUREUS" class="logo-img">
+                <div class="logo-text">
+                    <span class="brand">AUREUS</span>
+                    <span class="tagline">Clinical Nutrition</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item">
+                    <i class="fa-solid fa-table-columns"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="food-log.html" class="nav-item">
+                    <i class="fa-solid fa-utensils"></i>
+                    <span>Food Log</span>
+                </a>
+                <a href="food-database.html" class="nav-item">
+                    <i class="fa-solid fa-apple-whole"></i>
+                    <span>Food Database</span>
+                </a>
+                <a href="meal-planner.html" class="nav-item">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    <span>Meal Planner</span>
+                </a>
+
+                <div class="nav-divider"></div>
+
+                <a href="fasting-timer.html" class="nav-item special-timer active">
+                    <i class="fa-solid fa-stopwatch"></i>
+                    <span>Fasting Timer</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="settings.html" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+
+                <div class="user-profile" id="userProfileBtn">
+                    <img src="images/item_profile.png" alt="Profile" class="avatar" id="currentAvatar">
+                    <div class="user-info">
+                        <div class="user-name" id="currentUserName">BlindSnk</div>
+                        <div class="user-role">Pro Member</div>
+                    </div>
+                    <i class="fa-solid fa-ellipsis-vertical options-icon"></i>
+
+                    <!-- User Switcher Popover -->
+                    <div class="user-switcher-popover" id="userSwitcherPopover">
+                        <div class="popover-header">Switch User</div>
+                        <div class="user-option current" data-user="BlindSnk" data-avatar="images/item_profile.png">
+                            <img src="images/item_profile.png" alt="BlindSnk">
+                            <span class="name">BlindSnk</span>
+                            <i class="fa-solid fa-check" style="margin-left: auto; color: var(--primary-lime);"></i>
+                        </div>
+                        <div class="user-option" data-user="Gio Bardales" data-avatar="images/gio_profile.png">
+                            <img src="images/gio_profile.png" alt="Gio Bardales">
+                            <span class="name">Gio Bardales</span>
+                        </div>
+                        <div class="popover-divider"></div>
+                        <div class="add-user-option logout-option" onclick="logout()" style="color: #EF4444;">
+                            <i class="fa-solid fa-right-from-bracket"
+                                style="background: rgba(239, 68, 68, 0.1); color: #EF4444;"></i>
+                            <span>Cerrar sesión</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <!-- MOBILE TOP BAR (Logo + Hamburger) -->
+            <div class="mobile-top-bar">
+                <div class="mobile-brand-group">
+                    <img src="images/logo.png" alt="Logo" class="mobile-logo-img">
+                    <span class="mobile-brand-text">AUREUS</span>
+                </div>
+                <!-- MOBILE HAMBURGER BUTTON -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- HEADER -->
+            <header class="top-header">
+                <div class="header-left-group" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                    <div class="badge-pill-green"
+                        style="background-color: rgba(212, 244, 88, 0.1); color: #D4F458; padding: 6px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;">
+                        INTERMITTENT FASTING
+                    </div>
+                    <h1 style="font-size: 36px; font-weight: 800; letter-spacing: -1px; margin: 4px 0;">Fasting Timer
+                    </h1>
+                    <div style="font-size: 14px; color: #888; max-width: 600px; line-height: 1.5;">
+                        Track your fasting windows to optimize autophagy and ketosis. Select a protocol below to begin
+                        your journey.
+                    </div>
+
+                    <!-- Hidden elements for JS logic preservation (status text updates) -->
+                    <div style="display: none;">
+                        <span id="headerStatusText">Not Fasting</span>
+                        <span id="headerGoalText">Goal: 16h TRF</span>
+                    </div>
+
+                </div>
+
+
+
+                <div class="header-actions">
+                    <button id="globalSaveBtn" class="btn-save">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Save Changes
+                    </button>
+                </div>
+            </header>
+
+            <!-- FASTING GRID (PREMIUM V2) -->
+            <div class="fasting-grid">
+
+                <!-- LEFT COLUMN -->
+                <div class="timer-col">
+                    <!-- TIMER CARD -->
+                    <div class="timer-card-large">
+                        <div class="timer-tabs-premium">
+                            <button class="timer-tab-btn active">16:8 TRF</button>
+                            <button class="timer-tab-btn">12:12 Circadian</button>
+                            <button class="timer-tab-btn">20:4 Warrior</button>
+                        </div>
+
+                        <div class="timer-circle-container">
+                            <!-- Ring SVG -->
+                            <svg class="timer-ring-svg" viewBox="0 0 300 300">
+                                <!-- Background Track -->
+                                <circle class="ring-bg" cx="150" cy="150" r="135"></circle>
+                                <!-- Progress Path -->
+                                <circle class="ring-progress" id="ringProgress" cx="150" cy="150" r="135"></circle>
+                            </svg>
+
+                            <!-- Knob (Rotates via JS) -->
+                            <div class="ring-knob-container" id="knobContainer">
+                                <div class="ring-knob"></div>
+                            </div>
+
+                            <!-- Content -->
+                            <div class="timer-inner-content">
+                                <div class="status-badge-neon" id="timerStatusBadge">
+                                    <i class="fa-solid fa-bolt"></i> <span id="badgeText">READY</span>
+                                </div>
+                                <div class="timer-digits-giant" id="timerDigits">00:00:00</div>
+                                <div class="timer-meta-row">
+                                    <span id="targetTimeDisplay">Target: --:--</span>
+                                    <span class="sep">•</span>
+                                    <span id="progressPercentDisplay">0%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timer-action-row">
+                            <button class="btn-pill-dark" id="btnAdjust">Adjust</button>
+                            <button class="btn-pill-white" id="btnStartFast">Start Fast</button>
+                        </div>
+                    </div>
+
+                    <!-- METABOLIC PHASES -->
+                    <!-- METABOLIC PHASES (Redesign) -->
+                    <div class="metabolic-card-premium">
+                        <div class="meta-header">
+                            <div class="meta-title-group">
+                                <div class="icon-circle-dark">
+                                    <i class="fa-solid fa-chart-line"></i>
+                                </div>
+                                <h3>Metabolic Phases</h3>
+                            </div>
+                            <div class="meta-badge-dark">
+                                <span class="dot-yellow"></span>
+                                <span class="badge-text" id="currentPhaseBadge">PHASE 3: KETOSIS</span>
+                            </div>
+                        </div>
+
+                        <div class="timeline-container-premium">
+                            <div class="timeline-track-bg"></div>
+                            <div class="timeline-progress-bar"></div>
+
+                            <!-- Start 0h -->
+                            <div class="timeline-point" style="left: 0%">
+                                <div class="point-marker"><i class="fa-solid fa-play"></i></div>
+                                <div class="point-info">
+                                    <span class="p-lbl">Start</span>
+                                    <span class="p-time">0h</span>
+                                </div>
+                            </div>
+
+                            <!-- Sugar Drop 4h (16.6%) -->
+                            <div class="timeline-point" style="left: 17%">
+                                <div class="point-marker"><i class="fa-solid fa-cube"></i></div>
+                                <div class="point-info">
+                                    <span class="p-lbl">Sugar Drop</span>
+                                    <span class="p-time">4h</span>
+                                </div>
+                            </div>
+
+                            <!-- Ketosis 12h (50%) -->
+                            <div class="timeline-point" style="left: 50%">
+                                <div class="point-marker icon-marker"><i class="fa-solid fa-bolt"></i></div>
+                                <div class="point-info">
+                                    <span class="p-lbl">Ketosis</span>
+                                    <span class="p-time">12h</span>
+                                </div>
+                            </div>
+
+                            <!-- Autophagy 16h (66%) -->
+                            <div class="timeline-point" style="left: 67%">
+                                <div class="point-marker"><i class="fa-solid fa-recycle"></i></div>
+                                <div class="point-info">
+                                    <span class="p-lbl">Autophagy</span>
+                                    <span class="p-time">16h</span>
+                                </div>
+                            </div>
+
+                            <!-- Deep Clean 24h (100%) -->
+                            <div class="timeline-point" style="left: 98%">
+                                <div class="point-marker"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                                <div class="point-info">
+                                    <span class="p-lbl">Deep Clean</span>
+                                    <span class="p-time">24h</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- REPORTS & INSIGHTS (New) -->
+                    <div style="margin-top: 48px;">
+                        <div style="margin-bottom: 24px;">
+                            <h2
+                                style="font-size: 28px; font-weight: 700; color: #fff; margin: 0 0 8px 0; letter-spacing: -0.5px;">
+                                Reports & Insights</h2>
+                            <div style="font-size: 14px; color: #71717a; font-weight: 500;">Weekly Analysis • Oct 23 -
+                                Oct 29</div>
+                        </div>
+
+                        <div class="metabolic-insight-card">
+                            <!-- Card Header -->
+                            <div class="meta-header-row">
+                                <div class="meta-title-group">
+                                    <div class="icon-circle-yellow">
+                                        <i class="fa-solid fa-bolt"></i>
+                                    </div>
+                                    <div>
+                                        <h3>Metabolic Flexibility</h3>
+                                        <span class="meta-subtitle">Ketosis Efficiency</span>
+                                    </div>
+                                </div>
+                                <div class="status-badge-green">
+                                    <span id="metabolicStatus">Optimal</span>
+                                </div>
+                            </div>
+
+                            <!-- Main Insight & Sparkline -->
+                            <div class="meta-main-content">
+                                <div class="meta-text-area">
+                                    <h4 class="meta-big-val">
+                                        You've spent <span id="deepKetosisVal" class="text-yellow">0 hours</span> in
+                                        deep ketosis this week.
+                                    </h4>
+                                    <p class="meta-description" id="metabolicInsightText">
+                                        Your body is efficiently switching fuel sources, minimizing glucose spikes
+                                        during feeding windows.
+                                    </p>
+                                </div>
+                                <div class="meta-graph-area">
+                                    <div class="sparkline-bars" id="ketosisSparkline">
+                                        <!-- Bars injected by JS -->
+                                    </div>
+                                    <div class="sparkline-labels">
+                                        <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Stats Grid -->
+                            <div class="meta-stats-grid">
+                                <div class="m-stat-item">
+                                    <span class="m-stat-label">Weekly Score</span>
+                                    <span class="m-stat-value" id="metabolicScore">--</span>
+                                </div>
+                                <div class="m-stat-item clickable" id="btnEditWeeklyGoal">
+                                    <span class="m-stat-label">Weekly Goal <i class="fa-solid fa-pen-to-square"
+                                            style="font-size: 9px; opacity: 0.5; margin-left: 4px;"></i></span>
+                                    <span class="m-stat-value" id="weeklyGoalDisplay">--</span>
+                                </div>
+                                <div class="m-stat-item">
+                                    <span class="m-stat-label">Weekly Ketosis</span>
+                                    <span class="m-stat-value" id="fatBurnTime">--</span>
+                                </div>
+                                <div class="m-stat-item clickable" id="btnKetonesInfo">
+                                    <span class="m-stat-label">Ketones Δ <i class="fa-solid fa-circle-info"
+                                            style="font-size: 9px; opacity: 0.5; margin-left: 4px;"></i></span>
+                                    <span class="m-stat-value text-green" id="weeklyChange">+0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div> <!-- closes timer-col (Left) -->
+
+                <!-- RIGHT COLUMN -->
+                <div class="stats-col">
+
+
+
+                    <!-- Monthly Fasting History (Premium Calendar) -->
+                    <div class="history-calendar-card">
+                        <div class="calendar-header">
+                            <div class="header-left">
+                                <div class="icon-circle-green">
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                </div>
+                                <div class="calendar-title-group">
+                                    <h3>History</h3>
+                                    <span id="currentMonthYear">October 2026</span>
+                                </div>
+                            </div>
+                            <div class="calendar-nav">
+                                <button class="nav-btn" id="prevMonth"><i class="fa-solid fa-chevron-left"></i></button>
+                                <button class="nav-btn" id="nextMonth"><i
+                                        class="fa-solid fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="calendar-body">
+                            <div class="weekday-labels">
+                                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                            </div>
+                            <div class="calendar-grid" id="historyCalendarGrid">
+                                <!-- Days injected by JS -->
+                            </div>
+                        </div>
+
+                        <div class="calendar-footer-stats">
+                            <div class="c-stat">
+                                <span class="c-stat-val" id="monthlyTotalHours">0h</span>
+                                <span class="c-stat-lbl">Total Time</span>
+                            </div>
+                            <div class="c-stat">
+                                <span class="c-stat-val" id="monthlyCompletedDays">0</span>
+                                <span class="c-stat-lbl">Days Fasted</span>
+                            </div>
+                            <div class="c-stat">
+                                <span class="c-stat-val" id="monthlyBestStreak">0</span>
+                                <span class="c-stat-lbl">Best Streak</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- HYDRATION (BOWL) -->
+                    <!-- HYDRATION (Redesign v2) -->
+                    <div class="card-premium-dark" style="min-height: 380px; display: flex; flex-direction: column;">
+                        <div class="timer-header-row" style="margin-bottom: 30px;">
+                            <div class="header-left-group">
+                                <div class="icon-circle-blue">
+                                    <i class="fa-solid fa-droplet"></i>
+                                </div>
+                                <h3 style="margin:0; font-size: 18px;">Hydration</h3>
+                            </div>
+                            <div class="header-right-val">1,500 <small>ml</small></div>
+                        </div>
+
+                        <div class="hydration-rect-container">
+                            <div class="water-rect-shape">
+                                <div class="water-rect-fill">
+                                    <div class="water-rect-text">50% Goal</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="water-controls-row">
+                            <button class="btn-water-pill" onclick="addWater(250)">
+                                <i class="fa-solid fa-plus"></i> 250ml
+                            </button>
+                            <button class="btn-water-pill" onclick="addWater(500)">
+                                <i class="fa-solid fa-plus"></i> 500ml
+                            </button>
+                        </div>
+                    </div>
+
+
+
+                </div> <!-- closes stats-col -->
+            </div> <!-- closes fasting-grid -->
+
+        </main> <!-- closes main-content -->
+    </div> <!-- closes app-container -->
+
+
+    <!-- Hydration Manager Modal -->
+    <div id="hydrationModal" class="modal-overlay hidden">
+        <div class="modal-content premium-modal" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3>Hydration Log</h3>
+                <button class="close-modal" id="closeHydroModal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="hydro-summary-big">
+                    <span id="hydroModalValue">1,500</span>
+                    <small>/ <span id="hydroModalGoal">3,000</span> ml</small>
+                </div>
+
+                <div class="hydro-actions-grid">
+                    <button class="btn-hydro-action" onclick="adjustWater(-250)">
+                        <i class="fa-solid fa-minus"></i> 250ml
+                    </button>
+                    <button class="btn-hydro-action" onclick="adjustWater(250)">
+                        <i class="fa-solid fa-plus"></i> 250ml
+                    </button>
+                    <button class="btn-hydro-action" onclick="adjustWater(-500)">
+                        <i class="fa-solid fa-minus"></i> 500ml
+                    </button>
+                    <button class="btn-hydro-action" onclick="adjustWater(500)">
+                        <i class="fa-solid fa-plus"></i> 500ml
+                    </button>
+                </div>
+
+                <div class="input-group" style="margin-top: 20px;">
+                    <label>Custom Amount (ml)</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="number" id="customWaterInput" placeholder="e.g. 100" class="modern-input">
+                        <button class="btn-pill-white" style="padding: 10px 20px;" id="btnAddCustomWater">Add</button>
+                    </div>
+                </div>
+
+                <div class="input-group"
+                    style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                    <label>Daily Goal</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="number" id="customGoalInput" value="3000" class="modern-input">
+                        <button class="btn-pill-dark" style="padding: 10px 20px;" id="btnSetGoal">Set</button>
+                    </div>
+                </div>
+
+                <button class="btn-text-danger" id="btnResetWater" style="margin-top: 10px; width: 100%;">Reset Today's
+                    Log</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Timer Modal -->
+    <div id="timerEditModal" class="modal-overlay hidden">
+        <div class="modal-content premium-modal" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3>Edit Timer</h3>
+                <button class="close-modal" id="closeTimerEditModal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>Start Time</label>
+                    <input type="datetime-local" id="editStartTimeInput" class="modern-input"
+                        style="color-scheme: dark;">
+                    <div class="quick-adjust-row">
+                        <button class="btn-adjust-mini" onclick="shiftStartTime(-2)">-2h</button>
+                        <button class="btn-adjust-mini" onclick="shiftStartTime(-1)">-1h</button>
+                        <button class="btn-adjust-mini" onclick="shiftStartTime(1)">+1h</button>
+                        <button class="btn-adjust-mini" onclick="shiftStartTime(2)">+2h</button>
+                    </div>
+                </div>
+
+                <div class="input-group" style="margin-top: 20px;">
+                    <label>Goal Duration (Hours)</label>
+                    <input type="number" id="editGoalInput" class="modern-input" placeholder="e.g. 16">
+                </div>
+
+                <div style="margin-top: 30px; display: flex; gap: 10px;">
+                    <button class="btn-pill-white" style="width: 100%; justify-content: center;"
+                        id="btnSaveTimerEdit">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Weekly Goal Modal -->
+    <div id="weeklyGoalModal" class="modal-overlay hidden">
+        <div class="modal-content premium-modal" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3>Weekly Goal</h3>
+                <button class="close-modal" id="closeWeeklyGoalModal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>Weekly Fasting Goal (Hours)</label>
+                    <input type="number" id="weeklyGoalInput" class="modern-input" placeholder="e.g. 112">
+                    <p style="font-size: 12px; color: #71717a; margin-top: 8px;">Standard 16:8 protocol is 112h per
+                        week.</p>
+                </div>
+
+                <div style="margin-top: 30px; display: flex; gap: 10px;">
+                    <button class="btn-pill-white" style="width: 100%; justify-content: center;"
+                        id="btnSaveWeeklyGoal">Save Goal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ketones Info Modal -->
+    <div id="ketonesInfoModal" class="modal-overlay hidden">
+        <div class="modal-content premium-modal" style="max-width: 450px;">
+            <div class="modal-header">
+                <h3>Ketones Δ (Weekly Change)</h3>
+                <button class="close-modal" id="closeKetonesInfoModal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <div class="icon-circle-yellow"
+                        style="margin: 0 auto 16px auto; background: rgba(34, 197, 94, 0.1); color: #22c55e; width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <p style="color: #fff; font-size: 16px; font-weight: 600;">How does this metric work?</p>
+                </div>
+
+                <div class="meta-description" style="font-size: 14px; line-height: 1.6; color: #a1a1aa;">
+                    <p>This indicator tracks your <strong>metabolic progress</strong> by comparing your weekly ketosis
+                        hours against the previous week.</p>
+
+                    <div
+                        style="background: rgba(255,255,255,0.03); padding: 16px; border-radius: 12px; margin: 16px 0; border: 1px solid rgba(255,255,255,0.05);">
+                        <p style="margin: 0; color: #fff; font-size: 13px;"><strong>Example Calculation:</strong></p>
+                        <ul style="margin: 10px 0 0 20px; padding: 0;">
+                            <li>If you did <strong>4h</strong> of ketosis this week and <strong>2h</strong> last week,
+                                you'll see <span class="text-green">+100%</span>.</li>
+                            <li>If you did <strong>3h</strong> this week and <strong>4h</strong> last week, you'll see
+                                <span class="text-red">-25%</span> as a warning.</li>
+                        </ul>
+                    </div>
+
+                    <p>It's designed to help you maintain consistency and warn you if your metabolic intensity is
+                        dropping.</p>
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <button class="btn-pill-white" style="width: 100%; justify-content: center;"
+                        id="btnGotItKetones">Entendido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fasting Plan Selection Modal -->
+    <div id="fastingPlanModal" class="modal-overlay hidden">
+        <div class="modal-content premium-modal" style="max-width: 500px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <div>
+                    <h3 style="margin-bottom: 4px;">Periodos de ayuno</h3>
+                    <p style="font-size: 13px; color: #a1a1aa; margin: 0;">Elige tu periodo preferido de ayuno</p>
+                </div>
+                <button class="close-modal" id="closePlanModal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="modal-body">
+
+                <!-- BEGINNER -->
+                <div class="plan-section-group">
+                    <div class="plan-sec-title">
+                        <h4>Principiante</h4>
+                        <span>Ideal para: Iniciarse en el ayuno</span>
+                    </div>
+                    <div class="plan-cards-row">
+                        <div class="plan-card color-green" onclick="selectPlan(12)">
+                            <div class="plan-time">12:12</div>
+                            <div class="plan-desc">Un ayuno de 12 horas con un periodo de comidas de 12 horas.</div>
+                            <i class="fa-regular fa-circle-check plan-check"></i>
+                        </div>
+                        <div class="plan-card color-green" onclick="selectPlan(13)">
+                            <div class="plan-time">13:11</div>
+                            <div class="plan-desc">Un ayuno de 13 horas con un periodo de comidas de 11 horas.</div>
+                            <i class="fa-regular fa-circle-check plan-check"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HABITUAL -->
+                <div class="plan-section-group">
+                    <div class="plan-sec-title">
+                        <h4>Habitual</h4>
+                        <span>Ideal para: Beneficios completos de salud</span>
+                    </div>
+                    <div class="plan-cards-row">
+                        <div class="plan-card color-yellow" onclick="selectPlan(16)">
+                            <div class="plan-time">16:8</div>
+                            <div class="plan-desc">Un ayuno de 16 horas con un periodo de comidas de 8 horas.</div>
+                            <i class="fa-solid fa-circle-check plan-check active"></i>
+                        </div>
+                        <div class="plan-card color-yellow" onclick="selectPlan(17)">
+                            <div class="plan-time">17:7</div>
+                            <div class="plan-desc">Un ayuno de 17 horas con un periodo de comidas de 7 horas.</div>
+                            <i class="fa-regular fa-circle-check plan-check"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADVANCED -->
+                <div class="plan-section-group">
+                    <div class="plan-sec-title">
+                        <h4>Avanzado</h4>
+                        <span>Ideal para: Ocasiones puntuales</span>
+                    </div>
+                    <div class="plan-cards-row">
+                        <div class="plan-card color-orange" onclick="selectPlan(21)">
+                            <div class="plan-time">21:3</div>
+                            <div class="plan-desc">Un ayuno de 21 horas con un periodo de comidas de 3 horas.</div>
+                            <i class="fa-regular fa-circle-check plan-check"></i>
+                        </div>
+                        <div class="plan-card color-orange" onclick="selectPlan(22)">
+                            <div class="plan-time">22:2</div>
+                            <div class="plan-desc">Un ayuno de 22 horas con un periodo de comidas de 2 horas.</div>
+                            <i class="fa-regular fa-circle-check plan-check"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Daily Summary Modal -->
+    <div id="dailySummaryModal" class="modal-overlay hidden">
+        <div class="modal-content premium-modal" style="max-width: 450px;">
+            <div class="modal-header">
+                <div>
+                    <h3 id="summaryModalDate">Fasting Summary</h3>
+                    <p style="font-size: 13px; color: #a1a1aa; margin: 0;">Daily Performance Breakdown</p>
+                </div>
+                <button class="close-modal" id="closeSummaryModal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="summary-hero-card">
+                    <div class="hero-stat-main">
+                        <span id="summaryTotalTime">0h 0m</span>
+                        <small>Total Fasting</small>
+                    </div>
+                </div>
+
+                <div class="summary-details-grid">
+                    <div class="s-detail-item">
+                        <div class="s-icon purple"><i class="fa-solid fa-moon"></i></div>
+                        <div class="s-info">
+                            <span class="s-label">Started</span>
+                            <span class="s-val" id="summaryStartTime">--:--</span>
+                        </div>
+                    </div>
+                    <div class="s-detail-item">
+                        <div class="s-icon green"><i class="fa-solid fa-sun"></i></div>
+                        <div class="s-info">
+                            <span class="s-label">Finished</span>
+                            <span class="s-val" id="summaryEndTime">--:--</span>
+                        </div>
+                    </div>
+                    <div class="s-detail-item">
+                        <div class="s-icon yellow"><i class="fa-solid fa-bolt"></i></div>
+                        <div class="s-info">
+                            <span class="s-label">Deep Ketosis</span>
+                            <span class="s-val" id="summaryDeepKetosis">0h</span>
+                        </div>
+                    </div>
+                    <div class="s-detail-item">
+                        <div class="s-icon blue"><i class="fa-solid fa-bullseye"></i></div>
+                        <div class="s-info">
+                            <span class="s-label">Target Goal</span>
+                            <span class="s-val" id="summaryTargetGoal">16h</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-insight-box">
+                    <i class="fa-solid fa-quote-left"></i>
+                    <p id="summaryInsightText">Great job! You exceeded your target today, helping your body optimize fat
+                        burning and cellular repair.</p>
+                </div>
+
+                <button class="btn-pill-white" style="width: 100%; margin-top: 10px;" id="closeSummaryBtn">Done</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MOBILE NAVIGATION DRAWER -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <div class="mobile-nav-drawer" id="mobileNavDrawer">
+        <div class="drawer-header">
+            <div class="logo-group">
+                <img src="images/logo.png" alt="Logo" width="32">
+                <span class="drawer-brand">AUREUS</span>
+            </div>
+            <button class="drawer-close-btn" id="drawerCloseBtn">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="index.html" class="drawer-item">
+                <i class="fa-solid fa-table-columns"></i> Dashboard
+            </a>
+            <a href="food-log.html" class="drawer-item">
+                <i class="fa-solid fa-utensils"></i> Food Log
+            </a>
+            <a href="food-database.html" class="drawer-item">
+                <i class="fa-solid fa-apple-whole"></i> Food Database
+            </a>
+            <a href="meal-planner.html" class="drawer-item">
+                <i class="fa-regular fa-calendar-days"></i> Meal Planner
+            </a>
+            <a href="fasting-timer.html" class="drawer-item active">
+                <i class="fa-solid fa-stopwatch"></i> Fasting Timer
+            </a>
+            <div class="drawer-divider"></div>
+            <a href="settings.html" class="drawer-item">
+                <i class="fa-solid fa-gear"></i> Settings
+            </a>
+            <div class="drawer-user-profile">
+                <img src="images/item_profile.png" alt="Profile">
+                <div class="d-user-info">
+                    <div class="d-name">BlindSnk</div>
+                    <div class="d-role">Pro Member</div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Keep existing scripts -->
+    <script src="food-data.js"></script>
+    <script src="global-sync.js"></script>
+    <script src="fasting-renderer.js"></script>
+</body>
+
+</html>

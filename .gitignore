@@ -1,0 +1,5 @@
+*.zip
+backup_*
+backups/
+BACKUP_*
+test_zip_content/

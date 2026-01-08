@@ -1,0 +1,2698 @@
+/* --- PREMIUM FASTING TIMER STYLES (v2.0) --- */
+
+/* Utility & Overrides */
+.fasting-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    min-height: calc(100vh - 140px);
+    /* Fill remaining height */
+}
+
+.timer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    height: 100%;
+}
+
+.stats-col {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    height: 100%;
+}
+
+/* 1. Main Timer Card */
+.timer-card-large {
+    background-color: #0d0d0f;
+    /* Very dark background */
+    border-radius: 40px;
+    /* Extra rounded */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 30px 30px 60px 30px;
+    /* Increased bottom padding */
+    flex: 2;
+    /* Takes up more vertical space */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    justify-content: center;
+    /* Center the circle vertically since tabs/buttons are absolute */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    /* Set min-height to accommodate all elements */
+    min-height: 680px;
+}
+
+/* Top Tabs */
+/* Top Tabs */
+/* Top Tabs */
+.timer-tabs-premium {
+    background-color: transparent;
+    padding: 8px 16px;
+    display: flex;
+    gap: 8px;
+    position: absolute;
+    top: 150px;
+    z-index: 100;
+    /* Removed background/border to let ring show through */
+}
+
+.timer-tab-btn {
+    background: transparent;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 24px;
+    color: #555;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Outfit', sans-serif;
+}
+
+.timer-tab-btn.active {
+    background-color: var(--primary-lime);
+    color: #000;
+    box-shadow: 0 4px 12px rgba(212, 244, 88, 0.3);
+}
+
+.timer-tab-btn:hover:not(.active) {
+    color: #888;
+}
+
+/* Central Oval Timer */
+/* This mimics the "oval" in the center with the glowing effect */
+.timer-oval-display {
+    position: relative;
+    width: 380px;
+    height: 240px;
+    background: radial-gradient(50% 50% at 50% 50%, #1a1a1c 0%, #0d0d0f 100%);
+    border-radius: 50%;
+    /* Make it an oval via width/height ratio */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8), 0 10px 30px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    margin: 20px 0;
+}
+
+/* The glowing text inside */
+.timer-digits-large {
+    font-size: 96px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -3px;
+    text-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    line-height: 1;
+    margin-top: 10px;
+}
+
+.ready-badge {
+    background-color: rgba(255, 215, 0, 0.15);
+    /* Gold tint */
+    color: #FFD700;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    position: absolute;
+    top: 30px;
+}
+
+.sub-timer-text {
+    font-size: 14px;
+    color: #555;
+    margin-top: 0px;
+    font-weight: 500;
+}
+
+/* Buttons */
+.timer-action-row {
+    display: flex;
+    gap: 16px;
+    z-index: 100;
+    justify-content: center;
+    position: absolute;
+    bottom: 150px;
+    padding: 0;
+}
+
+.btn-pill-dark {
+    background-color: #27272a;
+    color: #fff;
+    border: none;
+    padding: 16px 36px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    font-family: 'Outfit', sans-serif;
+}
+
+.btn-pill-dark:hover {
+    background-color: #3f3f46;
+}
+
+.btn-pill-white {
+    background-color: #fff;
+    color: #000;
+    border: none;
+    padding: 16px 42px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    transition: 0.2s;
+    font-family: 'Outfit', sans-serif;
+}
+
+.btn-pill-white:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+/* 2. Metabolic Timeline Card */
+.metabolic-card {
+    background-color: #0d0d0f;
+    border-radius: 30px;
+    padding: 30px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.timeline-premium {
+    position: relative;
+    height: 4px;
+    background-color: #27272a;
+    border-radius: 4px;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.timeline-progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background-color: var(--primary-lime);
+    width: 50%;
+    /* Demo */
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(212, 244, 88, 0.4);
+}
+
+.timeline-point {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    /* Start active points centered properly */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.timeline-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #121212;
+    border: 2px solid #444;
+    transition: 0.3s;
+    margin-bottom: 12px;
+    z-index: 2;
+}
+
+.timeline-point.active .timeline-dot {
+    background-color: var(--primary-lime);
+    border-color: var(--primary-lime);
+    box-shadow: 0 0 15px rgba(212, 244, 88, 0.6);
+}
+
+.timeline-point.current .timeline-dot {
+    width: 24px;
+    height: 24px;
+    border-width: 4px;
+    border-color: #fff;
+    background-color: var(--primary-lime);
+    box-shadow: 0 0 20px rgba(212, 244, 88, 0.8);
+}
+
+.timeline-label {
+    font-size: 11px;
+    color: #555;
+    font-weight: 600;
+    text-transform: uppercase;
+    position: absolute;
+    top: 24px;
+    width: 80px;
+    text-align: center;
+}
+
+.timeline-time {
+    font-size: 10px;
+    color: #444;
+    position: absolute;
+    top: 38px;
+}
+
+.timeline-point.active .timeline-label {
+    color: #fff;
+}
+
+/* 3. Hydration Card (Bowl style) */
+.card-premium-dark {
+    background-color: #0d0d0f;
+    border-radius: 32px;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.hydration-bowl-container {
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-top: 10px;
+}
+
+.bowl-shape {
+    width: 180px;
+    height: 90px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 0 0 90px 90px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    /* Simulate water fill */
+}
+
+.bowl-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    /* Fill level */
+    background: linear-gradient(180deg, #3B82F6 0%, #1d4ed8 100%);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bowl-text {
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    mix-blend-mode: overlay;
+    z-index: 10;
+}
+
+/* 4. Uric Acid Watch (Orange Alert) */
+.uric-card-orange {
+    background-color: #1a0805;
+    /* Dark reddish/orange tint bg */
+    border-radius: 32px;
+    padding: 24px;
+    border: 1px solid rgba(249, 115, 22, 0.3);
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 30px rgba(249, 115, 22, 0.05);
+}
+
+.uric-label {
+    color: #F97316;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    display: block;
+    text-align: right;
+    opacity: 0.8;
+}
+
+.uric-title {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.uric-desc {
+    color: #aaa;
+    font-size: 12px;
+    line-height: 1.5;
+    margin-bottom: 24px;
+    display: block;
+    max-width: 90%;
+}
+
+.btn-outline-orange {
+    width: 100%;
+    background: transparent;
+    border: 1px solid rgba(249, 115, 22, 0.5);
+    color: #F97316;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-family: 'Outfit', sans-serif;
+}
+
+.btn-outline-orange:hover {
+    background: rgba(249, 115, 22, 0.1);
+    border-color: #F97316;
+}
+
+/* 5. Weekly Goal (Glowing circles) */
+.weekly-goal-card {
+    background-color: #0d0d0f;
+    border-radius: 32px;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.week-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.week-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.status-pill-track {
+    background-color: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    color: #10B981;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+.week-circles-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.day-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: #1c1c1e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #555;
+    transition: 0.3s;
+}
+
+.day-circle.active {
+    background-color: #fff;
+    color: #000;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+/* --- HYDRATION REDESIGN V2 (Based on Image 2) --- */
+
+.timer-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.icon-circle-blue {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: #172554;
+    /* Darker blue (blue-950) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #60A5FA;
+    /* Lighter blue icon */
+    font-size: 16px;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+}
+
+.header-right-val {
+    font-size: 24px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
+}
+
+.hydration-rect-container {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    /* Align to bottom so water fills from bottom visually if we animate height */
+    justify-content: center;
+    padding: 20px 0 40px 0;
+}
+
+.water-rect-shape {
+    width: 100%;
+    max-width: 240px;
+    height: 180px;
+    background-color: #1a1a1c;
+    border-radius: 40px;
+    /* Big rounded corners matching Image 2 */
+    display: flex;
+    align-items: flex-end;
+    /* Water at bottom */
+    position: relative;
+    overflow: hidden;
+    /* Optional slight inner shadow for depth */
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.water-rect-fill {
+    width: 100%;
+    /* Height will be set by JS dynamically */
+    height: 50%;
+    background: #3B82F6;
+    /* Solid bright blue matching image */
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 20px;
+    transition: height 0.5s ease-in-out;
+    /* Add a lighter top border for liquid surface effect */
+    border-top: 4px solid rgba(255, 255, 255, 0.1);
+}
+
+.water-rect-text {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    opacity: 0.9;
+    letter-spacing: 0.5px;
+    text-transform: capitalize;
+}
+
+.water-controls-row {
+    display: flex;
+    gap: 12px;
+    margin-top: auto;
+}
+
+.btn-water-pill {
+    flex: 1;
+    background-color: #27272a;
+    /* Dark button bg */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border-radius: 30px;
+    padding: 14px 0;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.btn-water-pill:hover {
+    background-color: #3f3f46;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-water-pill i {
+    color: #3B82F6;
+    font-size: 12px;
+}
+
+/* Hydration Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-overlay.hidden {
+    display: none;
+}
+
+.modal-content.premium-modal {
+    background-color: #1a1a1c;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 24px;
+    width: 90%;
+    animation: fadeInModal 0.3s ease;
+}
+
+@keyframes fadeInModal {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.close-modal {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.hydro-summary-big {
+    text-align: center;
+    font-size: 40px;
+    font-weight: 800;
+    margin-bottom: 24px;
+    color: #3B82F6;
+}
+
+.hydro-summary-big small {
+    font-size: 16px;
+    color: #888;
+    font-weight: 400;
+}
+
+.hydro-actions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.btn-hydro-action {
+    background-color: #27272a;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-hydro-action:hover {
+    background-color: #3f3f46;
+}
+
+/* Premium Modal Styling */
+.modal-content.premium-modal {
+    background: #18181b;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    padding: 32px;
+}
+
+.modal-header h3 {
+    font-size: 24px;
+    font-weight: 700;
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.5px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #a1a1aa;
+    /* Zinc-400 */
+    margin-bottom: 8px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.modern-input {
+    background-color: #09090b;
+    /* Darker bg for input */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    /* Subtle border */
+    color: #fff;
+    padding: 16px;
+    border-radius: 16px;
+    /* Smooth corners */
+    width: 100%;
+    font-size: 15px;
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.modern-input:focus {
+    border-color: #D4F458;
+    /* Lime focus */
+    box-shadow: 0 0 0 4px rgba(212, 244, 88, 0.1);
+}
+
+/* Specific button overrides inside modals */
+.modal-body .btn-pill-white {
+    background: #D4F458;
+    /* Lime button */
+    color: #000;
+    font-weight: 700;
+    padding: 16px;
+    font-size: 16px;
+    border-radius: 100px;
+    /* Pill shape */
+    border: none;
+    box-shadow: 0 4px 15px rgba(212, 244, 88, 0.3);
+    transition: 0.2s;
+}
+
+.modal-body .btn-pill-white:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 244, 88, 0.4);
+}
+
+
+
+.input-group label {
+    display: block;
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 6px;
+}
+
+.btn-text-danger {
+    background: transparent;
+    border: none;
+    color: #EF4444;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: underline;
+    opacity: 0.7;
+}
+
+/* Plan Selection Modal Styles */
+.plan-section-group {
+    margin-bottom: 24px;
+}
+
+.plan-sec-title {
+    margin-bottom: 12px;
+}
+
+.plan-sec-title h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+}
+
+.plan-sec-title span {
+    font-size: 12px;
+    color: #a1a1aa;
+}
+
+.plan-cards-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.plan-card {
+    border-radius: 16px;
+    padding: 16px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.plan-card:hover {
+    transform: translateY(-2px);
+}
+
+.plan-time {
+    font-size: 24px;
+    font-weight: 800;
+    font-family: 'Outfit', sans-serif;
+    margin-bottom: 6px;
+}
+
+.plan-desc {
+    font-size: 11px;
+    line-height: 1.3;
+    opacity: 0.9;
+}
+
+.plan-check {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 16px;
+    opacity: 0.2;
+    color: #fff;
+}
+
+.plan-check.active {
+    opacity: 1;
+}
+
+/* Color Palettes for Plan Cards */
+.plan-card.color-green {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    color: #10B981;
+}
+
+.plan-card.color-yellow {
+    background: rgba(250, 204, 21, 0.1);
+    border: 1px solid rgba(250, 204, 21, 0.2);
+    color: #FACC15;
+}
+
+.plan-card.color-orange {
+    background: rgba(249, 115, 22, 0.1);
+    border: 1px solid rgba(249, 115, 22, 0.2);
+    color: #F97316;
+}
+
+/* Adjust button placement for quick time shifts */
+.quick-adjust-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.btn-adjust-mini {
+    background-color: #27272a;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-adjust-mini:hover {
+    background-color: #3f3f46;
+}
+
+
+/* === METABOLIC PHASES TIMELINE (Redesign) === */
+
+.metabolic-card-premium {
+    background-color: #0d0d0f;
+    border-radius: 32px;
+    padding: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.meta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.meta-title-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.icon-circle-dark {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #27272a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FACC15;
+    font-size: 16px;
+}
+
+.meta-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.meta-badge-dark {
+    background: rgba(250, 204, 21, 0.1);
+    border: 1px solid rgba(250, 204, 21, 0.15);
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dot-yellow {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #FACC15;
+    box-shadow: 0 0 10px rgba(250, 204, 21, 0.6);
+    animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 10px rgba(250, 204, 21, 0.6);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(250, 204, 21, 0.9);
+    }
+}
+
+.badge-text {
+    color: #FACC15;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* === TIMELINE TRACK (Horizontal Bar with Points) === */
+
+.timeline-container-premium {
+    position: relative;
+    height: 100px;
+    display: flex;
+    align-items: center;
+}
+
+.timeline-track-bg {
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background: #27272a;
+    border-radius: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.timeline-progress-bar {
+    position: absolute;
+    height: 4px;
+    background: linear-gradient(90deg, #D4F458 0%, #FACC15 100%);
+    border-radius: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 0 12px rgba(212, 244, 88, 0.4);
+    width: 50%;
+    /* Dynamic via JS */
+}
+
+/* Timeline Points & Markers */
+.timeline-point {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    z-index: 10;
+}
+
+.timeline-point:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.point-marker {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #1a1a1c;
+    border: 2px solid #3f3f46;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #71717a;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+.timeline-point:hover .point-marker {
+    background: #27272a;
+    border-color: #52525b;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Active / Completed Phase Styling */
+.timeline-point.active .point-marker {
+    border-color: #D4F458;
+    background: rgba(212, 244, 88, 0.1);
+    color: #D4F458;
+    box-shadow: 0 0 15px rgba(212, 244, 88, 0.3);
+}
+
+
+.timeline-point.icon-marker .point-marker {
+    border-color: #FACC15;
+    background: rgba(250, 204, 21, 0.15);
+    color: #FACC15;
+    box-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
+    border-width: 3px;
+}
+
+.point-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    position: absolute;
+    top: 55px;
+}
+
+.p-lbl {
+    font-size: 11px;
+    font-weight: 700;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.timeline-point.active .p-lbl,
+.timeline-point.icon-marker .p-lbl {
+    color: #fff;
+}
+
+.p-time {
+    font-size: 10px;
+    color: #52525b;
+    font-weight: 600;
+}
+
+/* === URIC ACID CARD (Redesign) === */
+
+.uric-premium-card {
+    background: linear-gradient(135deg, #1a0805 0%, #0d0d0f 100%);
+    border-radius: 28px;
+    padding: 24px;
+    border: 1px solid rgba(249, 115, 22, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.uric-watermark-icon {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    font-size: 120px;
+    color: rgba(249, 115, 22, 0.05);
+    z-index: 0;
+}
+
+.uric-header-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: #F97316;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+}
+
+.uric-premium-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    z-index: 1;
+    position: relative;
+}
+
+.uric-desc-text {
+    font-size: 13px;
+    color: #a1a1aa;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    z-index: 1;
+    position: relative;
+}
+
+.btn-uric-premium {
+    width: 100%;
+    background: transparent;
+    border: 1px solid rgba(249, 115, 22, 0.3);
+    color: #F97316;
+    padding: 14px;
+    border-radius: 16px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    z-index: 1;
+    position: relative;
+}
+
+.btn-uric-premium:hover {
+    background: rgba(249, 115, 22, 0.1);
+    border-color: #F97316;
+}
+
+/* === WEEKLY GOAL (Redesigned Bar Chart) === */
+
+.week-header-premium {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.week-header-premium h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.badge-track-yellow {
+    background: rgba(250, 204, 21, 0.1);
+    border: 1px solid rgba(250, 204, 21, 0.2);
+    color: #FACC15;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.week-chart-container .chart-col:hover div {
+    background: #D4F458 !important;
+    box-shadow: 0 0 12px rgba(212, 244, 88, 0.4);
+}
+
+/* === CIRCULAR TIMER SVG RING === */
+
+.timer-circle-container {
+    position: relative;
+    width: 420px;
+    height: 420px;
+    margin: 30px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.dashboard-timer-scale {
+    max-width: 340px;
+    /* Smaller scale for dashboard */
+    margin: 20px auto;
+}
+
+.timer-ring-svg {
+    width: 100%;
+    height: auto;
+    transform: rotate(-90deg);
+    /* Start from top */
+    pointer-events: none;
+}
+
+.ring-bg {
+    fill: none;
+    stroke: #27272a;
+    stroke-width: 10px;
+}
+
+.ring-progress {
+    fill: none;
+    stroke: #D4F458;
+    stroke-width: 12px;
+    stroke-linecap: round;
+    stroke-dasharray: 848;
+    /* Circumference = 2 * PI * radius (135*2*3.14) */
+    stroke-dashoffset: 848;
+    /* Initially empty */
+    transition: stroke-dashoffset 0.5s ease-in-out;
+    filter: drop-shadow(0 0 10px rgba(212, 244, 88, 0.3));
+}
+
+/* Knob (Travels along ring path) */
+.ring-knob-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* Rotate via JS to position knob along progress */
+    transform-origin: 50% 50%;
+    transform: rotate(0deg);
+    z-index: 5;
+}
+
+.ring-knob {
+    position: absolute;
+    top: 15px;
+    /* (300-270)/2 = 15. The ring radius is 135, center 150. */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #D4F458;
+    box-shadow: 0 0 15px rgba(212, 244, 88, 0.6), 0 0 30px rgba(212, 244, 88, 0.3);
+}
+
+/* Inner Content (Overlays ring) */
+.timer-inner-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-badge-neon {
+    background: rgba(250, 204, 21, 0.1);
+    border: 1px solid rgba(250, 204, 21, 0.3);
+    padding: 6px 16px;
+    border-radius: 20px;
+    color: #FACC15;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    box-shadow: 0 0 15px rgba(250, 204, 21, 0.1);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+}
+
+.timer-digits-giant {
+    font-size: 68px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: -2px;
+    text-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+    font-variant-numeric: tabular-nums;
+    font-family: 'Inter', sans-serif;
+    /* Ensure font matches */
+}
+
+.timer-meta-row {
+    color: #a1a1aa;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.timer-meta-row .sep {
+    color: #52525b;
+    font-size: 8px;
+    vertical-align: middle;
+}
+
+/* =========================================== */
+/*  METABOLIC PHASE TOOLTIP STYLES            */
+/* =========================================== */
+
+.phase-tooltip-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+.phase-tooltip {
+    background: linear-gradient(135deg, #18181b 0%, #0d0d0f 100%);
+    border-radius: 24px;
+    padding: 32px;
+    max-width: 480px;
+    width: 90%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9);
+    position: fixed;
+    /* Fixed to viewport as calculated by JS */
+    z-index: 9999;
+    /* Ensure it stays on top */
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px) scale(0.95);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.phase-tooltip.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+    animation: none;
+    /* Disable animation on toggle to rely on transition */
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.tooltip-close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #a1a1aa;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+.tooltip-close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.tooltip-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.tooltip-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.tooltip-title-group h3 {
+    margin: 0 0 4px 0;
+    font-size: 24px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
+}
+
+.tooltip-time-range {
+    font-size: 13px;
+    color: #a1a1aa;
+    font-weight: 600;
+}
+
+.tooltip-description {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #d4d4d8;
+    margin-bottom: 24px;
+}
+
+.tooltip-benefits {
+    margin-bottom: 20px;
+}
+
+.tooltip-benefits h4 {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.tooltip-benefits ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tooltip-benefits li {
+    padding: 8px 0 8px 28px;
+    position: relative;
+    font-size: 14px;
+    color: #d4d4d8;
+    line-height: 1.5;
+}
+
+.tooltip-benefits li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    color: #10B981;
+    font-weight: 800;
+    font-size: 16px;
+}
+
+.tooltip-tip {
+    background: rgba(212, 244, 88, 0.05);
+    border: 1px solid rgba(212, 244, 88, 0.15);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.tooltip-tip-icon {
+    color: #D4F458;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.tooltip-tip-text {
+    font-size: 13px;
+    color: #d4d4d8;
+    line-height: 1.5;
+}
+
+/* Color variants for different phases */
+.tooltip-icon.phase-start {
+    background: rgba(212, 244, 88, 0.1);
+    border-color: rgba(212, 244, 88, 0.3);
+    color: #D4F458;
+}
+
+.tooltip-icon.phase-sugar {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.3);
+    color: #3B82F6;
+}
+
+.tooltip-icon.phase-ketosis {
+    background: rgba(250, 204, 21, 0.1);
+    border-color: rgba(250, 204, 21, 0.3);
+    color: #FACC15;
+}
+
+.tooltip-icon.phase-autophagy {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #10B981;
+}
+
+.tooltip-icon.phase-deep {
+    background: rgba(139, 92, 246, 0.1);
+    border-color: rgba(139, 92, 246, 0.3);
+    color: #8B5CF6;
+}
+
+/* --- Metabolic Phase Tooltips --- */
+.meta-tooltip {
+    position: fixed;
+    z-index: 999999;
+    pointer-events: none;
+    background: rgba(13, 13, 15, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 16px;
+    width: 260px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    font-family: 'Outfit', sans-serif;
+}
+
+.meta-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.meta-tooltip-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.meta-tooltip-icon-box {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.meta-tooltip-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.meta-tooltip-desc {
+    font-size: 13px;
+    color: #aaa;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Animations for child elements */
+.meta-tooltip.visible .meta-tooltip-icon-box {
+    animation: iconPulse 2s infinite ease-in-out;
+}
+
+@keyframes iconPulse {
+    0% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+        filter: brightness(1.3);
+    }
+
+    100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+}
+
+/* --- Weekly Goal Card Styles --- */
+.weekly-goal-card {
+    background: rgba(18, 18, 20, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 20px 24px;
+    margin-top: 24px;
+    width: 100%;
+}
+
+.weekly-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.weekly-header h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    font-family: 'Outfit', sans-serif;
+}
+
+.status-badge {
+    background: rgba(250, 204, 21, 0.1);
+    color: #FACC15;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(250, 204, 21, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.weekly-chart {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 120px;
+    padding-bottom: 20px;
+    /* Space for labels */
+    position: relative;
+}
+
+.day-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    position: relative;
+    height: 100%;
+    justify-content: flex-end;
+}
+
+.day-bar {
+    width: 6px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    height: 40px;
+    /* Default height for empty/future */
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+}
+
+/* Status variants */
+.day-bar.completed {
+    background: #FACC15;
+    box-shadow: 0 0 15px rgba(250, 204, 21, 0.3);
+}
+
+.day-bar.missed {
+    background: #EF4444;
+    /* Red for missed */
+    opacity: 0.6;
+}
+
+.day-bar.active {
+    background: #fff;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+    animation: barPulse 2s infinite;
+}
+
+.day-bar.today::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0.8;
+}
+
+.day-label {
+    font-size: 11px;
+    color: #666;
+    font-weight: 600;
+    position: absolute;
+    bottom: -24px;
+    font-family: 'Outfit', sans-serif;
+}
+
+.day-column.active .day-label {
+    color: #fff;
+    /* Highlight current day label */
+}
+
+@keyframes barPulse {
+    0% {
+        opacity: 0.8;
+    }
+
+    50% {
+        opacity: 1;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+    }
+
+    100% {
+        opacity: 0.8;
+    }
+}
+
+/* Tooltip for bars */
+/* Tooltip for bars */
+.chart-tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    color: #fff;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+    z-index: 10;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    top: -40px;
+    /* Adjust based on bar height dynamically usually, or fixed above */
+}
+
+/* =========================================== */
+/*  HISTORY CALENDAR STYLES (Premium Redesign) */
+/* =========================================== */
+
+.history-calendar-card {
+    background: #121214;
+    border-radius: 24px;
+    padding: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 24px;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.calendar-header .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.icon-circle-green {
+    width: 44px;
+    height: 44px;
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.calendar-title-group h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+}
+
+.calendar-title-group span {
+    font-size: 13px;
+    color: #71717a;
+    font-weight: 500;
+}
+
+.calendar-nav {
+    display: flex;
+    gap: 8px;
+}
+
+.nav-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #a1a1aa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.calendar-body {
+    margin-bottom: 30px;
+}
+
+.weekday-labels {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.weekday-labels span {
+    font-size: 11px;
+    font-weight: 700;
+    color: #3f3f46;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #a1a1aa;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.calendar-day:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.calendar-day.empty {
+    opacity: 0.15;
+    cursor: default;
+    background: transparent;
+    border: none;
+}
+
+.calendar-day.today {
+    background: rgba(34, 197, 94, 0.05);
+    border-color: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+}
+
+.calendar-day .day-num {
+    z-index: 2;
+}
+
+.calendar-day .status-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+    margin-top: 4px;
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.6);
+    display: none;
+    /* Only show if completed */
+}
+
+.calendar-day.completed .status-indicator {
+    display: block;
+}
+
+.calendar-day.completed {
+    color: #fff;
+}
+
+.calendar-footer-stats {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.c-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.c-stat-val {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+}
+
+.c-stat-lbl {
+    font-size: 12px;
+    color: #71717a;
+    font-weight: 500;
+}
+
+.day-column:hover .chart-tooltip {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* Correctly styled new Timer container just in case it is still referenced implicitly or for future use */
+/* Ensuring it doesn't conflict if ever re-introduced, but effectively hidden if HTML removed */
+.timer-display-container {
+    display: none;
+}
+
+
+/* =========================================== */
+/*  MOBILE NAV COMPONENTS (Global)             */
+/* =========================================== */
+
+/* Mobile Top Bar (Hidden on Desktop) */
+.mobile-top-bar {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: #0d0d0f;
+    margin-bottom: 0;
+}
+
+.mobile-brand-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mobile-logo-img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.mobile-brand-text {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    color: #fff;
+    font-size: 18px;
+    letter-spacing: -0.5px;
+}
+
+/* Base Hamburger Button Style */
+.mobile-menu-btn {
+    display: none;
+    /* Hidden by default, shown in mobile media query */
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #27272a;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 100;
+}
+
+/* Mobile Nav Overlay */
+.mobile-nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 9998;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.mobile-nav-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Mobile Nav Drawer */
+.mobile-nav-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    background: #18181b;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 9999;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.mobile-nav-drawer.open {
+    transform: translateX(0);
+}
+
+.drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.logo-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.drawer-brand {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+}
+
+.drawer-close-btn {
+    background: transparent;
+    border: none;
+    color: #a1a1aa;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.drawer-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.drawer-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 12px;
+    color: #a1a1aa;
+    text-decoration: none;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    transition: all 0.2s;
+}
+
+.drawer-item:hover,
+.drawer-item.active {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+
+.drawer-item.active {
+    background: var(--primary-lime);
+    color: #000;
+    font-weight: 700;
+}
+
+.drawer-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 12px 0;
+}
+
+.drawer-user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: auto;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.drawer-user-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.d-user-info .d-name {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.d-user-info .d-role {
+    color: #a1a1aa;
+    font-size: 12px;
+}
+
+
+/* =========================================== */
+/*  RESPONSIVE STYLES (v2.0 Fixes)             */
+/* =========================================== */
+
+/* Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+    .fasting-grid {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .timer-card-large {
+        min-height: 500px;
+        padding: 40px 20px;
+    }
+
+    .timer-circle-container {
+        width: 360px;
+        height: 360px;
+    }
+
+    .timer-digits-giant {
+        font-size: 56px;
+    }
+
+    .top-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .header-actions {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .metabolic-card-premium,
+    .weekly-goal-card,
+    .card-premium-dark,
+    .uric-premium-card {
+        width: 100%;
+    }
+}
+
+/* Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+
+    /* Global Mobile Scroll Fix */
+    html,
+    body {
+        overflow-x: hidden;
+        overflow-y: auto !important;
+        height: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Show Mobile Top Bar */
+    .mobile-top-bar {
+        display: flex;
+        position: sticky;
+        top: 0;
+        z-index: 9999;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .mobile-menu-btn {
+        display: flex;
+    }
+
+    /* Hide Sidebar */
+    .sidebar {
+        display: none !important;
+    }
+
+    /* Layout Reset - Force simple block stacking */
+    .app-container,
+    .main-content {
+        display: block !important;
+        grid-template-columns: none !important;
+        padding: 0;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    /* Fasting Grid - Stack vertically */
+    .fasting-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 16px;
+        gap: 32px;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    /* Columns Reset */
+    .timer-col,
+    .stats-col {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 32px;
+        height: auto !important;
+        overflow: visible !important;
+        min-height: 0 !important;
+    }
+
+    .top-header {
+        padding: 0 16px;
+        margin-top: 10px;
+        flex-direction: column;
+        align-items: flex-start;
+        display: flex;
+        height: auto;
+    }
+
+    /* Timer Card Fixes - Ensure full visibility */
+    .timer-card-large {
+        display: flex !important;
+        flex-direction: column !important;
+        height: auto !important;
+        min-height: auto !important;
+        padding: 30px 16px 40px 16px;
+        position: relative !important;
+        overflow: visible !important;
+        margin-bottom: 0;
+    }
+
+    .timer-tabs-premium {
+        position: relative !important;
+        top: auto !important;
+        left: auto;
+        transform: none;
+        margin-bottom: 24px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .timer-circle-container {
+        position: relative !important;
+        width: 280px !important;
+        height: 280px !important;
+        margin: 0 auto 32px auto !important;
+        /* Spacing below ring */
+        flex-shrink: 0;
+    }
+
+    .dashboard-timer-scale {
+        transform: scale(0.85);
+    }
+
+    .timer-digits-giant {
+        font-size: 48px;
+    }
+
+    .timer-action-row {
+        position: relative !important;
+        bottom: auto !important;
+        left: auto;
+        transform: none;
+        width: 100%;
+        padding: 0;
+        margin-top: 10px;
+        display: flex;
+        gap: 12px;
+    }
+
+    .btn-pill-dark,
+    .btn-pill-white {
+        padding: 14px 20px;
+        font-size: 14px;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Ensure all cards have proper spacing and no overlap */
+    .metabolic-card-premium,
+    .weekly-goal-card,
+    .card-premium-dark,
+    .uric-premium-card {
+        width: 100% !important;
+        margin-bottom: 24px;
+        height: auto !important;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+    }
+
+    /* Reports & Insights Fix */
+    div[style*="margin-top: 48px"] {
+        margin-top: 32px !important;
+    }
+
+    .week-header-premium {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .badge-track-yellow {
+        align-self: flex-start;
+    }
+
+    .timer-header-row {
+        align-items: flex-start;
+    }
+
+    .header-right-val {
+        font-size: 20px;
+    }
+
+    .modal-content.premium-modal {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .plan-cards-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================== */
+/*  METABOLIC FLEXIBILITY CARD (Enhanced)      */
+/* =========================================== */
+
+.metabolic-insight-card {
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 24px;
+    padding: 32px;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.meta-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+}
+
+.icon-circle-yellow {
+    width: 56px;
+    height: 56px;
+    background: rgba(250, 204, 21, 0.1);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(250, 204, 21, 0.1);
+    font-size: 24px;
+    color: #FACC15;
+}
+
+.meta-title-group h3 {
+    margin: 0 0 4px 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+}
+
+.meta-subtitle {
+    color: #a1a1aa;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.status-badge-green {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+    padding: 8px 16px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.meta-main-content {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 32px;
+}
+
+.meta-text-area {
+    flex: 1;
+}
+
+.meta-big-val {
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    margin: 0 0 16px 0;
+    letter-spacing: -0.5px;
+    font-family: 'Outfit', sans-serif;
+}
+
+.text-yellow {
+    color: #FACC15;
+}
+
+.meta-description {
+    margin: 0;
+    color: #a1a1aa;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.meta-graph-area {
+    width: 180px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.sparkline-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 80px;
+    margin-bottom: 12px;
+}
+
+.s-bar {
+    flex: 1;
+    background: rgba(250, 204, 21, 0.1);
+    border-radius: 4px;
+    min-height: 4px;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    cursor: pointer;
+}
+
+.s-bar:hover {
+    background: #FACC15;
+    box-shadow: 0 0 15px rgba(250, 204, 21, 0.4);
+}
+
+.sparkline-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #3f3f46;
+    font-weight: 700;
+}
+
+.meta-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.m-stat-item.clickable {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.m-stat-item.clickable:hover {
+    transform: translateY(-2px);
+    opacity: 0.8;
+}
+
+.m-stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.m-stat-label {
+    font-size: 11px;
+    color: #71717a;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.m-stat-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+}
+
+.text-green {
+    color: #22c55e;
+}
+
+.text-red {
+    color: #ef4444;
+}
+
+@media (max-width: 1024px) {
+    .meta-main-content {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .meta-graph-area {
+        width: 100%;
+        height: 120px;
+    }
+
+    .meta-big-val {
+        font-size: 24px;
+    }
+
+    .meta-stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* =========================================== */
+/*  DAILY SUMMARY MODAL STYLES                 */
+/* =========================================== */
+
+.summary-hero-card {
+    background: linear-gradient(135deg, rgba(212, 244, 88, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+    border: 1px solid rgba(212, 244, 88, 0.2);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.hero-stat-main {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.hero-stat-main span {
+    font-size: 48px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -1px;
+    font-family: 'Outfit', sans-serif;
+}
+
+.hero-stat-main small {
+    color: #a1a1aa;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.summary-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.s-detail-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.s-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.s-icon.purple {
+    background: rgba(168, 85, 247, 0.1);
+    color: #a855f7;
+}
+
+.s-icon.green {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.s-icon.yellow {
+    background: rgba(250, 204, 21, 0.1);
+    color: #facc15;
+}
+
+.s-icon.blue {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.s-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.s-label {
+    font-size: 11px;
+    color: #71717a;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.s-val {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.summary-insight-box {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.summary-insight-box i {
+    color: #D4F458;
+    font-size: 20px;
+    margin-top: 4px;
+}
+
+.summary-insight-box p {
+    margin: 0;
+    font-size: 14px;
+    color: #a1a1aa;
+    line-height: 1.6;
+}
+
+@media (max-width: 480px) {
+    .summary-hero-card {
+        padding: 20px;
+    }
+
+    .hero-stat-main span {
+        font-size: 36px;
+    }
+
+    .summary-details-grid {
+        grid-template-columns: 1fr;
+    }
+}

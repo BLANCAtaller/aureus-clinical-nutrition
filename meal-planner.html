@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUREUS FIT AI - Meal Planner</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .library-filters {
+            display: flex !important;
+            flex-direction: row !important;
+            gap: 8px;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .library-filters::-webkit-scrollbar {
+            display: none;
+            /* Chrome/Safari */
+        }
+
+        .filter-pill {
+            flex-shrink: 0;
+            padding: 6px 16px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            /* var(--border-color) */
+            color: #A1A1AA;
+            /* var(--text-gray) */
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .filter-pill:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #FAFAFA;
+            /* var(--text-white) */
+        }
+
+        .filter-pill.active {
+            background: #D4F458;
+            /* var(--primary-lime) */
+            color: #000;
+            border-color: #D4F458;
+            box-shadow: 0 0 10px rgba(212, 244, 88, 0.4);
+        }
+    </style>
+
+    <!-- Drag and Drop (Optional, but good for planner) -->
+    <!-- We'll stick to vanilla JS for now -->
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="AUREUS" class="logo-img">
+                <div class="logo-text">
+                    <span class="brand">AUREUS</span>
+                    <span class="tagline">Clinical Nutrition</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item">
+                    <i class="fa-solid fa-table-columns"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="food-log.html" class="nav-item">
+                    <i class="fa-solid fa-utensils"></i>
+                    <span>Food Log</span>
+                </a>
+                <a href="food-database.html" class="nav-item">
+                    <i class="fa-solid fa-apple-whole"></i>
+                    <span>Food Database</span>
+                </a>
+                <a href="#" class="nav-item active">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    <span>Meal Planner</span>
+                </a>
+
+                <div class="nav-divider"></div>
+
+                <a href="fasting-timer.html" class="nav-item special-timer">
+                    <i class="fa-solid fa-stopwatch"></i>
+                    <span>Fasting Timer</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="settings.html" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+                <div class="user-profile" id="userProfileBtn">
+                    <img src="images/item_profile.png" alt="Profile" class="avatar" id="currentAvatar">
+                    <div class="user-info">
+                        <div class="user-name" id="currentUserName">BlindSnk</div>
+                        <div class="user-role">Pro Member</div>
+                    </div>
+                    <i class="fa-solid fa-ellipsis-vertical options-icon"></i>
+
+                    <!-- User Switcher Popover -->
+                    <div class="user-switcher-popover" id="userSwitcherPopover">
+                        <div class="popover-header">Switch User</div>
+                        <div class="user-option current" data-user="BlindSnk" data-avatar="images/item_profile.png">
+                            <img src="images/item_profile.png" alt="BlindSnk">
+                            <span class="name">BlindSnk</span>
+                            <i class="fa-solid fa-check" style="margin-left: auto; color: var(--primary-lime);"></i>
+                        </div>
+                        <div class="user-option" data-user="Gio Bardales" data-avatar="images/gio_profile.png">
+                            <img src="images/gio_profile.png" alt="Gio Bardales">
+                            <span class="name">Gio Bardales</span>
+                        </div>
+                        <div class="popover-divider"></div>
+                        <div class="add-user-option logout-option" onclick="logout()" style="color: #EF4444;">
+                            <i class="fa-solid fa-right-from-bracket"
+                                style="background: rgba(239, 68, 68, 0.1); color: #EF4444;"></i>
+                            <span>Cerrar sesión</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- MOBILE TOP BAR (Logo + Hamburger) -->
+            <div class="mobile-top-bar">
+                <div class="mobile-brand-group">
+                    <img src="images/logo.png" alt="Logo" class="mobile-logo-img">
+                    <span class="mobile-brand-text">AUREUS</span>
+                </div>
+                <!-- MOBILE HAMBURGER BUTTON -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+            <!-- Header -->
+            <header class="top-header">
+                <div class="greeting-container">
+                    <div class="plan-week-badge">PLAN: WEEK <span id="currentWeekNum">42</span> • <span
+                            id="weekDateRange">Oct 16 - Oct 22</span></div>
+                    <h1>Weekly Planner</h1>
+                    <div class="date-subtitle">View and manage your entire week's meals. Ensure your macros and purines
+                        are balanced.</div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-primary-action small" id="btnShoppingList">
+                        <i class="fa-solid fa-cart-shopping"></i> Shopping List
+                    </button>
+
+                    <button class="btn-header-dark" title="Generate PDF Report" id="btnExportPDF">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        <div class="btn-col-text">
+                            <span>PDF</span>
+                            <span>Report</span>
+                        </div>
+                    </button>
+
+                    <button id="globalSaveBtn" class="btn-save">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Save Changes
+                    </button>
+                </div>
+            </header>
+
+            <!-- Planner Split Layout -->
+            <div class="planner-container">
+
+                <!-- LEFT PANEL COLUMN -->
+                <div class="planner-left-column">
+
+                    <!-- NEW: Plan Templates -->
+                    <div class="plan-templates-card">
+                        <div class="templates-header">
+                            <div class="t-title">
+                                <i class="fa-solid fa-folder-open"></i>
+                                Plan Templates
+                            </div>
+                            <a href="#" class="btn-manage">Manage</a>
+                        </div>
+                        <div class="template-list" id="templateList">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- EXISTING: Food Library -->
+                    <div class="planner-library-panel">
+                        <h3>Food Library</h3>
+
+                        <div class="library-search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="librarySearch" placeholder="Search foods...">
+                        </div>
+
+                        <div class="library-filters">
+                            <button class="filter-pill active" data-filter="all">All</button>
+                            <button class="filter-pill" data-filter="favorites">Mis Favoritos</button>
+                        </div>
+
+                        <div class="library-list" id="libraryList">
+                            <!-- Items injected by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT PANEL: Weekly Grid -->
+                <div class="planner-grid-panel">
+                    <div class="weekly-grid-header">
+                        <div class="corner-cell">
+                            <i class="fa-regular fa-clock" style="margin-right: 8px; font-size: 1.1rem;"></i> Weekly
+                            Planner Meal
+                        </div>
+                        <div class="day-col-header" data-day="mon">
+                            <span class="day-name">MON</span>
+                            <span class="day-num">16</span>
+                            <div class="day-summary" id="summary-mon"></div>
+                        </div>
+                        <div class="day-col-header" data-day="tue">
+                            <span class="day-name active">TUE</span>
+                            <span class="day-num active">17</span>
+                            <div class="day-summary" id="summary-tue"></div>
+                        </div>
+                        <div class="day-col-header" data-day="wed">
+                            <span class="day-name">WED</span>
+                            <span class="day-num">18</span>
+                            <div class="day-summary" id="summary-wed"></div>
+                        </div>
+                        <div class="day-col-header" data-day="thu">
+                            <span class="day-name">THU</span>
+                            <span class="day-num">19</span>
+                            <div class="day-summary" id="summary-thu"></div>
+                        </div>
+                        <div class="day-col-header" data-day="fri">
+                            <span class="day-name">FRI</span>
+                            <span class="day-num">20</span>
+                            <div class="day-summary" id="summary-fri"></div>
+                        </div>
+                        <div class="day-col-header" data-day="sat">
+                            <span class="day-name">SAT</span>
+                            <span class="day-num">21</span>
+                            <div class="day-summary" id="summary-sat"></div>
+                        </div>
+                        <div class="day-col-header" data-day="sun">
+                            <span class="day-name">SUN</span>
+                            <span class="day-num">22</span>
+                            <div class="day-summary" id="summary-sun"></div>
+                        </div>
+                    </div>
+
+                    <div class="weekly-grid-body" id="weeklyGridBody">
+                        <!-- Breakfast Row -->
+                        <!-- Lunch Row -->
+                        <!-- Dinner Row -->
+                        <!-- Rows injected via JS -->
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+    </div> <!-- End App Container -->
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+    <script src="food-data.js"></script>
+    <script src="global-sync.js"></script>
+    <script src="planner-renderer.js"></script>
+    <script src="food-db-renderer.js"></script>
+
+    <!-- Save Template Modal -->
+    <div id="saveTemplateModal" class="modal-overlay hidden">
+        <div class="modal-content premium-modal" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2>Save Plan Template</h2>
+                <button class="close-modal-save"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>Template Name</label>
+                    <input type="text" id="templateNameInput" placeholder="e.g., Strict Keto Week 1">
+                </div>
+                <div class="input-group">
+                    <label>Description (Optional)</label>
+                    <input type="text" id="templateDescInput" placeholder="e.g., Low Purine, 1800kcal">
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-cancel close-modal-save">Cancel</button>
+                    <button class="btn-save" id="confirmSaveTemplate">Save Template</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shopping List Modal -->
+    <div id="shoppingListModal" class="modal-overlay hidden">
+        <div class="modal-content premium-modal" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-cart-shopping" style="color:var(--primary-lime); margin-right:10px;"></i>
+                    Shopping List</h2>
+                <button class="close-modal-shopping"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p style="color:#aaa; font-size:13px; margin-bottom:15px;">Based on your Weekly Meal Plan:</p>
+                <div class="shopping-list-container" id="shoppingListContainer"
+                    style="max-height: 400px; overflow-y: auto; display:flex; flex-direction:column; gap:8px;">
+                    <!-- Items injected by JS -->
+                </div>
+                <div class="modal-actions" style="margin-top:20px;">
+                    <button class="btn-cancel close-modal-shopping">Close</button>
+                    <button class="btn-save" id="btnPrintShopping"><i class="fa-solid fa-print"></i> Print /
+                        Copy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Food Editor Modal -->
+    <div id="foodEditorModal" class="modal-overlay hidden">
+        <div class="modal-content premium-modal">
+            <div class="modal-header">
+                <h2>Editar Alimento</h2>
+                <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form id="foodEditorForm">
+                <input type="hidden" id="editIndex">
+
+                <div class="modal-body">
+                    <div class="editor-main">
+                        <div class="icon-selector-section">
+                            <div class="current-icon-display" id="iconDisplay">
+                                <i class="fa-solid fa-utensils"></i>
+                            </div>
+                            <button type="button" class="btn-change-icon" id="btnChangeIcon">Cambiar Icono</button>
+
+                            <!-- Icon Picker (Hidden by default) -->
+                            <div id="iconPicker" class="icon-picker-grid hidden">
+                                <i class="fa-solid fa-drumstick-bite" data-icon="fa-drumstick-bite"></i>
+                                <i class="fa-solid fa-fish" data-icon="fa-fish"></i>
+                                <i class="fa-solid fa-carrot" data-icon="fa-carrot"></i>
+                                <i class="fa-solid fa-cheese" data-icon="fa-cheese"></i>
+                                <i class="fa-solid fa-apple-whole" data-icon="fa-apple-whole"></i>
+                                <i class="fa-solid fa-seedling" data-icon="fa-seedling"></i>
+                                <i class="fa-solid fa-burger" data-icon="fa-burger"></i>
+                                <i class="fa-solid fa-glass-water" data-icon="fa-glass-water"></i>
+                                <i class="fa-solid fa-utensils" data-icon="fa-utensils"></i>
+                                <i class="fa-solid fa-egg" data-icon="fa-egg"></i>
+                                <i class="fa-solid fa-wheat-awn" data-icon="fa-wheat-awn"></i>
+                                <i class="fa-solid fa-ice-cream" data-icon="fa-ice-cream"></i>
+                            </div>
+                        </div>
+
+                        <div class="editor-fields">
+                            <div class="input-group">
+                                <label>Nombre</label>
+                                <input type="text" id="editName" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Imagen (URL / Link)</label>
+                                <input type="text" id="editImage" placeholder="https://ejemplo.com/imagen.png">
+                            </div>
+                            <div class="editor-row">
+                                <div class="input-group">
+                                    <label>Categoría</label>
+                                    <select id="editCategory">
+                                        <option value="Meats">Carnes</option>
+                                        <option value="Poultry">Aves</option>
+                                        <option value="Seafood">Mariscos</option>
+                                        <option value="Veggies">Verduras</option>
+                                        <option value="Dairy">Lácteos</option>
+                                        <option value="Fruits">Frutas</option>
+                                        <option value="Nuts">Frutos Secos</option>
+                                        <option value="Drinks">Bebidas</option>
+                                        <option value="Fast Food">Comida Rápida</option>
+                                        <option value="Others">Otros</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Estado</label>
+                                    <select id="editStatus">
+                                        <option value="safe">Seguro (Verde)</option>
+                                        <option value="caution">Precaución (Amarillo)</option>
+                                        <option value="avoid">Evitar (Rojo)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="macro-stats-editor">
+                        <div class="input-group small">
+                            <label>Purinas (mg)</label>
+                            <input type="number" id="editPurines">
+                        </div>
+                        <div class="input-group small">
+                            <label>Carbs (g)</label>
+                            <input type="number" step="0.1" id="editCarbs">
+                        </div>
+                        <div class="input-group small">
+                            <label>Proteína (g)</label>
+                            <input type="number" step="0.1" id="editProt">
+                        </div>
+                        <div class="input-group small">
+                            <label>Grasa (g)</label>
+                            <input type="number" step="0.1" id="editFat">
+                        </div>
+                        <div class="input-group small">
+                            <label>Calorías</label>
+                            <input type="number" id="editCal">
+                        </div>
+                    </div>
+
+                    <div class="input-group text-area">
+                        <label>Consejo / Nota</label>
+                        <textarea id="editTip" rows="2"></textarea>
+                    </div>
+
+                    <!-- INGREDIENTES Section -->
+                    <div class="ingredients-section" style="margin-top: 20px;">
+                        <label
+                            style="color: #A1A1AA; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block;">INGREDIENTES</label>
+                        <div class="ingredients-grid" id="editIngredientsGrid"></div>
+                        <button type="button" class="btn-add-ingredient" id="btnAddIngredient">
+                            <i class="fa-solid fa-plus"></i> Añadir Ingrediente
+                        </button>
+                    </div>
+
+                    <!-- Ingredient Mini-Modal -->
+                    <div class="ingredient-mini-modal hidden" id="ingredientMiniModal">
+                        <div class="ing-mini-content">
+                            <div class="ing-mini-header">
+                                <span id="miniModalTitle">Añadir Ingrediente</span>
+                                <button type="button" class="btn-close-mini" id="closeIngModal"><i
+                                        class="fa-solid fa-xmark"></i></button>
+                            </div>
+                            <div class="ing-mini-body">
+                                <div class="input-group">
+                                    <label>Nombre del Ingrediente</label>
+                                    <input type="text" id="ingEditName" placeholder="ej: Pollo">
+                                </div>
+                                <div class="input-group">
+                                    <label>Cantidad</label>
+                                    <input type="text" id="ingEditAmount" placeholder="ej: 150g">
+                                </div>
+                            </div>
+                            <div class="ing-mini-footer">
+                                <button type="button" class="btn-delete-ing" id="btnDeleteIng" style="display: none;"><i
+                                        class="fa-solid fa-trash"></i></button>
+                                <button type="button" class="btn-save-ing" id="btnSaveIng">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer" style="margin-top: 20px;">
+                        <button type="button" class="btn-delete hidden" id="btnDeleteFood"><i
+                                class="fa-solid fa-trash"></i></button>
+                        <div class="action-right">
+                            <button type="button" class="btn-cancel close-modal">Cancelar</button>
+                            <button type="submit" class="btn-save">Guardar Cambios</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html> <!-- Edit Meal Modal -->
+<div id="editMealModal" class="modal-backdrop hidden">
+    <div class="modal-content">
+        <h3 class="modal-title">Edit Meal</h3>
+        <div class="modal-form">
+            <div class="form-group">
+                <label>Meal Name</label>
+                <input type="text" id="editMealName" class="modern-input">
+            </div>
+            <div class="form-row-2">
+                <div class="form-group">
+                    <label>Calories</label>
+                    <input type="number" id="editMealCal" class="modern-input">
+                </div>
+                <div class="form-group">
+                    <label>Purines (mg)</label>
+                    <input type="number" id="editMealPurines" class="modern-input">
+                </div>
+            </div>
+            <div class="form-row-3">
+                <div class="form-group">
+                    <label>Fat (g)</label>
+                    <input type="number" id="editMealFat" class="modern-input">
+                </div>
+                <div class="form-group">
+                    <label>Prot (g)</label>
+                    <input type="number" id="editMealProt" class="modern-input">
+                </div>
+                <div class="form-group">
+                    <label>Carb (g)</label>
+                    <input type="number" id="editMealCarb" class="modern-input">
+                </div>
+            </div>
+        </div>
+        <div class="modal-actions">
+            <button id="deleteMealBtn" class="btn-delete">Delete</button>
+            <div class="action-right">
+                <button id="cancelEditBtn" class="btn-cancel">Cancel</button>
+                <button id="saveEditBtn" class="btn-save">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PDF Libs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- App Scripts -->
+<script src="food-data.js"></script>
+<script src="planner-renderer.js"></script>
+
+<!-- MOBILE NAVIGATION DRAWER -->
+<div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+<aside class="mobile-nav-drawer" id="mobileNavDrawer">
+    <div class="drawer-header">
+        <div class="logo-group">
+            <img src="images/logo.png" alt="Logo" class="mobile-logo-img">
+            <span class="drawer-brand">AUREUS</span>
+        </div>
+        <button class="drawer-close-btn" id="drawerCloseBtn">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <nav class="drawer-nav">
+        <a href="index.html" class="drawer-item">
+            <i class="fa-solid fa-table-columns"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="food-log.html" class="drawer-item">
+            <i class="fa-solid fa-utensils"></i>
+            <span>Food Log</span>
+        </a>
+        <a href="food-database.html" class="drawer-item">
+            <i class="fa-solid fa-apple-whole"></i>
+            <span>Food Database</span>
+        </a>
+        <a href="meal-planner.html" class="drawer-item active">
+            <i class="fa-regular fa-calendar-days"></i>
+            <span>Meal Planner</span>
+        </a>
+
+        <div class="drawer-divider"></div>
+
+        <a href="fasting-timer.html" class="drawer-item">
+            <i class="fa-solid fa-stopwatch"></i>
+            <span>Fasting Timer</span>
+        </a>
+
+        <div class="drawer-divider"></div>
+
+        <a href="settings.html" class="drawer-item">
+            <i class="fa-solid fa-gear"></i>
+            <span>Settings</span>
+        </a>
+    </nav>
+
+    <div class="drawer-user-profile">
+        <img src="images/item_profile.png" alt="Profile">
+        <div class="d-user-info">
+            <div class="d-name">BlindSnk</div>
+            <div class="d-role">Pro Member</div>
+        </div>
+    </div>
+</aside>
+</body>
+
+</html>
